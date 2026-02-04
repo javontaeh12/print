@@ -12,31 +12,52 @@ const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBh
 const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 // ---------- Auth Guard ----------
-async function checkAuth() {
-  const { data: { session } } = await supabase.auth.getSession();
-  if (!session) {
-    window.location.href = '/admin/login.html';
-    return null;
-  }
+// Wait for Supabase to process OAuth callback tokens in URL hash
+// This is critical: after Google OAuth redirect, tokens are in the URL fragment
+// and need to be exchanged for a session before we can check auth state
+const { data: { session: initialSession }, error: authError } = await supabase.auth.getSession();
 
-  // Check if user is authorized admin
-  const { data: admin } = await supabase
-    .from('admin_users')
-    .select('id')
-    .eq('email', session.user.email)
-    .single();
-
-  if (!admin) {
-    await supabase.auth.signOut();
-    window.location.href = '/admin/login.html';
-    return null;
-  }
-
-  return session;
+// If no session yet, listen for the auth state change from the OAuth callback
+let session = initialSession;
+if (!session && window.location.hash) {
+  // OAuth callback — wait for Supabase to process the hash tokens
+  session = await new Promise((resolve) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, sess) => {
+      if (event === 'SIGNED_IN' && sess) {
+        subscription.unsubscribe();
+        resolve(sess);
+      }
+    });
+    // Timeout after 5 seconds — if no auth event fires, redirect to login
+    setTimeout(() => {
+      subscription.unsubscribe();
+      resolve(null);
+    }, 5000);
+  });
 }
 
-const session = await checkAuth();
-if (!session) throw new Error('Not authenticated');
+if (!session) {
+  window.location.href = '/admin/login.html';
+  throw new Error('Not authenticated');
+}
+
+// Check if user is authorized admin
+const { data: admin } = await supabase
+  .from('admin_users')
+  .select('id')
+  .eq('email', session.user.email)
+  .single();
+
+if (!admin) {
+  await supabase.auth.signOut();
+  window.location.href = '/admin/login.html';
+  throw new Error('Not authorized');
+}
+
+// Clean up the URL hash after successful auth
+if (window.location.hash) {
+  history.replaceState(null, '', window.location.pathname);
+}
 
 // Set admin info in sidebar
 const user = session.user;

@@ -37,16 +37,32 @@
         sectionEls[el.dataset.section] = el;
       });
 
-      // Hide disabled sections
+      // Map section keys to page URLs for nav link hiding
+      const sectionPageMap = {
+        about: 'about.html',
+        clients: 'clients.html',
+        contact: 'contact.html',
+      };
+
+      // Hide disabled sections and their nav links
       sections.forEach(sec => {
         const el = sectionEls[sec.key];
         if (el && !sec.is_enabled) {
           el.style.display = 'none';
         }
+        // Hide nav links for disabled page-based sections
+        if (!sec.is_enabled && sectionPageMap[sec.key]) {
+          const pageUrl = sectionPageMap[sec.key];
+          document.querySelectorAll(`a[href="${pageUrl}"], a[href="/${pageUrl}"]`).forEach(link => {
+            const li = link.closest('li');
+            if (li) li.style.display = 'none';
+            else link.style.display = 'none';
+          });
+        }
       });
 
-      // Reorder enabled sections
-      const enabledSections = sections.filter(s => s.is_enabled);
+      // Reorder enabled sections (only homepage sections with data-section)
+      const enabledSections = sections.filter(s => s.is_enabled && sectionEls[s.key]);
       enabledSections.forEach(sec => {
         const el = sectionEls[sec.key];
         if (el && footer) {

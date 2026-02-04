@@ -116,7 +116,9 @@ Print/
 - [x] Homepage dynamic data loading (services, sections, pricing, analytics)
 - [x] Google Analytics integration (all pages)
 - [x] Fixed pages.js table names and credentials
-- [ ] Production testing
+- [x] Updated Supabase site_url and redirect URLs to production domain
+- [x] Section manager hides nav links for disabled page sections (about, clients, contact)
+- [ ] Production testing (Google OAuth login, CRUD operations, frontend rendering)
 
 ## Security
 
@@ -131,6 +133,7 @@ The Section Manager allows admins to:
 - **Reorder** sections via drag-and-drop
 - **Enable/disable** sections with toggle switches
 - Changes affect the frontend rendering order on the homepage
+- Disabling About Us, Our Clients, or Contact Us also hides their nav links on the homepage
 
 Default sections: Hero, Popular Services, Business Card Designer, About Us, Our Clients, Booking Form, File Upload, Contact Us
 

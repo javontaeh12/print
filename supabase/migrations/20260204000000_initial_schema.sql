@@ -152,8 +152,9 @@ CREATE POLICY "Admins can do anything with clients" ON clients FOR ALL
   USING (EXISTS (SELECT 1 FROM admin_users WHERE email = auth.jwt() ->> 'email'))
   WITH CHECK (EXISTS (SELECT 1 FROM admin_users WHERE email = auth.jwt() ->> 'email'));
 
+-- Non-recursive: compare row email directly to JWT email (no subquery on same table)
 CREATE POLICY "Admins can read admin_users" ON admin_users FOR SELECT
-  USING (EXISTS (SELECT 1 FROM admin_users WHERE email = auth.jwt() ->> 'email'));
+  USING (email = auth.jwt() ->> 'email');
 
 -- ---------- Storage Bucket ----------
 -- Create a public bucket for logo uploads

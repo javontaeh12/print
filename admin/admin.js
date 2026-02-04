@@ -126,7 +126,35 @@ function showToast(message, type = 'info') {
   toast.className = `toast ${type}`;
   toast.textContent = message;
   container.appendChild(toast);
-  setTimeout(() => { toast.remove(); }, 3500);
+  setTimeout(() => { toast.remove(); }, 4500);
+}
+
+// ---------- Upload Helpers ----------
+const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5 MB
+
+function validateImageFile(file) {
+  if (!file.type.startsWith('image/')) {
+    showToast('Only image files are allowed (JPG, PNG, GIF, WebP)', 'error');
+    return false;
+  }
+  if (file.size > MAX_FILE_SIZE) {
+    showToast(`File is too large (${(file.size / 1024 / 1024).toFixed(1)} MB). Max size is 5 MB.`, 'error');
+    return false;
+  }
+  return true;
+}
+
+function setUploadLoading(zone, loading) {
+  if (loading) {
+    zone.dataset.origHtml = zone.innerHTML;
+    zone.innerHTML = '<div style="display:flex;flex-direction:column;align-items:center;gap:8px;"><div class="spinner"></div><span>Uploading...</span></div>';
+    zone.style.pointerEvents = 'none';
+    zone.style.opacity = '0.6';
+  } else {
+    if (zone.dataset.origHtml) zone.innerHTML = zone.dataset.origHtml;
+    zone.style.pointerEvents = '';
+    zone.style.opacity = '';
+  }
 }
 
 // ---------- Modal Helpers ----------
@@ -220,22 +248,23 @@ productImageFileInput.addEventListener('change', () => {
 });
 
 async function handleProductImageFile(file) {
-  if (!file.type.startsWith('image/')) {
-    showToast('Please upload an image file', 'error');
-    return;
-  }
+  if (!validateImageFile(file)) return;
+  setUploadLoading(productImageZone, true);
+  showLoading('Uploading image...');
   const fileName = `products/${Date.now()}-${file.name}`;
   const { data, error } = await supabase.storage
     .from('uploads')
     .upload(fileName, file, { cacheControl: '3600', upsert: false });
-  if (error) { showToast('Upload failed: ' + error.message, 'error'); return; }
+  setUploadLoading(productImageZone, false);
+  hideLoading();
+  if (error) { showToast('Image upload failed. Please try again.', 'error'); return; }
   const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(fileName);
   const url = urlData.publicUrl;
   document.getElementById('productImage').value = url;
   document.getElementById('productImageImg').src = url;
   document.getElementById('productImagePreview').style.display = 'flex';
   productImageZone.style.display = 'none';
-  showToast('Image uploaded', 'success');
+  showToast('Image uploaded successfully', 'success');
 }
 
 document.getElementById('removeProductImageBtn').addEventListener('click', () => {
@@ -290,6 +319,7 @@ window.deleteProduct = async function(id) {
 
 document.getElementById('productForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  showLoading('Saving product...');
   const id = document.getElementById('productId').value;
   const category = document.getElementById('productCategoryCustom').value || document.getElementById('productCategory').value;
 
@@ -309,7 +339,8 @@ document.getElementById('productForm').addEventListener('submit', async (e) => {
     ({ error } = await supabase.from('products').insert(payload));
   }
 
-  if (error) { showToast('Failed to save product: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save product. Please try again.', 'error'); return; }
   showToast(id ? 'Product updated' : 'Product added', 'success');
   closeModal('productModal');
   loadProducts();
@@ -394,22 +425,23 @@ serviceImageFileInput.addEventListener('change', () => {
 });
 
 async function handleServiceImageFile(file) {
-  if (!file.type.startsWith('image/')) {
-    showToast('Please upload an image file', 'error');
-    return;
-  }
+  if (!validateImageFile(file)) return;
+  setUploadLoading(serviceImageZone, true);
+  showLoading('Uploading image...');
   const fileName = `services/${Date.now()}-${file.name}`;
   const { data, error } = await supabase.storage
     .from('uploads')
     .upload(fileName, file, { cacheControl: '3600', upsert: false });
-  if (error) { showToast('Upload failed: ' + error.message, 'error'); return; }
+  setUploadLoading(serviceImageZone, false);
+  hideLoading();
+  if (error) { showToast('Image upload failed. Please try again.', 'error'); return; }
   const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(fileName);
   const url = urlData.publicUrl;
   document.getElementById('serviceImageUrl').value = url;
   document.getElementById('serviceImageImg').src = url;
   document.getElementById('serviceImagePreview').style.display = 'flex';
   serviceImageZone.style.display = 'none';
-  showToast('Image uploaded', 'success');
+  showToast('Image uploaded successfully', 'success');
 }
 
 document.getElementById('removeServiceImageBtn').addEventListener('click', () => {
@@ -465,6 +497,7 @@ window.deleteService = async function(id) {
 
 document.getElementById('serviceForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  showLoading('Saving service...');
   const id = document.getElementById('serviceId').value;
   const category = document.getElementById('serviceCategoryCustom').value || document.getElementById('serviceCategory').value;
 
@@ -485,7 +518,8 @@ document.getElementById('serviceForm').addEventListener('submit', async (e) => {
     ({ error } = await supabase.from('services').insert(payload));
   }
 
-  if (error) { showToast('Failed to save service: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save service. Please try again.', 'error'); return; }
   showToast(id ? 'Service updated' : 'Service added', 'success');
   closeModal('serviceModal');
   loadServices();
@@ -588,6 +622,7 @@ window.deletePricing = async function(id) {
 
 document.getElementById('pricingForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  showLoading('Saving pricing...');
   const id = document.getElementById('pricingId').value;
 
   const payload = {
@@ -609,7 +644,8 @@ document.getElementById('pricingForm').addEventListener('submit', async (e) => {
     ({ error } = await supabase.from('pricing').insert(payload));
   }
 
-  if (error) { showToast('Failed to save pricing: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save pricing. Please try again.', 'error'); return; }
   showToast(id ? 'Pricing updated' : 'Pricing added', 'success');
   closeModal('pricingModal');
   loadPricing();
@@ -626,13 +662,14 @@ document.getElementById('pricingTypeFilter').addEventListener('change', (e) => {
 // ---------- Sections Manager ----------
 const DEFAULT_SECTIONS = [
   { key: 'hero', name: 'Hero Banner', enabled: true, order: 0 },
-  { key: 'services', name: 'Popular Services', enabled: true, order: 1 },
-  { key: 'designer', name: 'Business Card Designer', enabled: true, order: 2 },
-  { key: 'about', name: 'About Us', enabled: true, order: 3 },
-  { key: 'clients', name: 'Our Clients', enabled: true, order: 4 },
-  { key: 'booking', name: 'Booking Form', enabled: true, order: 5 },
-  { key: 'upload', name: 'File Upload', enabled: true, order: 6 },
-  { key: 'contact', name: 'Contact Us', enabled: true, order: 7 },
+  { key: 'products', name: 'Products', enabled: true, order: 1 },
+  { key: 'services', name: 'Popular Services', enabled: true, order: 2 },
+  { key: 'designer', name: 'Business Card Designer', enabled: true, order: 3 },
+  { key: 'about', name: 'About Us', enabled: true, order: 4 },
+  { key: 'clients', name: 'Our Clients', enabled: true, order: 5 },
+  { key: 'booking', name: 'Booking Form', enabled: true, order: 6 },
+  { key: 'upload', name: 'File Upload', enabled: true, order: 7 },
+  { key: 'contact', name: 'Contact Us', enabled: true, order: 8 },
 ];
 
 let sections = [];
@@ -741,6 +778,7 @@ function getDragAfterElement(container, y) {
 }
 
 document.getElementById('saveSectionsBtn').addEventListener('click', async () => {
+  showLoading('Saving section order...');
   // Upsert all sections
   const payload = sections.map((s, i) => ({
     key: s.key,
@@ -753,7 +791,8 @@ document.getElementById('saveSectionsBtn').addEventListener('click', async () =>
     .from('page_sections')
     .upsert(payload, { onConflict: 'key' });
 
-  if (error) { showToast('Failed to save sections: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save sections. Please try again.', 'error'); return; }
   showToast('Section order saved', 'success');
 });
 
@@ -776,22 +815,23 @@ aboutImageFileInput.addEventListener('change', () => {
 });
 
 async function handleAboutImageFile(file) {
-  if (!file.type.startsWith('image/')) {
-    showToast('Please upload an image file', 'error');
-    return;
-  }
+  if (!validateImageFile(file)) return;
+  setUploadLoading(aboutImageZone, true);
+  showLoading('Uploading image...');
   const fileName = `about/${Date.now()}-${file.name}`;
   const { data, error } = await supabase.storage
     .from('uploads')
     .upload(fileName, file, { cacheControl: '3600', upsert: false });
-  if (error) { showToast('Upload failed: ' + error.message, 'error'); return; }
+  setUploadLoading(aboutImageZone, false);
+  hideLoading();
+  if (error) { showToast('Image upload failed. Please try again.', 'error'); return; }
   const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(fileName);
   const url = urlData.publicUrl;
   document.getElementById('aboutImage').value = url;
   document.getElementById('aboutImageImg').src = url;
   document.getElementById('aboutImagePreview').style.display = 'flex';
   aboutImageZone.style.display = 'none';
-  showToast('Image uploaded', 'success');
+  showToast('Image uploaded successfully', 'success');
 }
 
 document.getElementById('removeAboutImageBtn').addEventListener('click', () => {
@@ -828,6 +868,7 @@ async function loadAbout() {
 }
 
 document.getElementById('saveAboutBtn').addEventListener('click', async () => {
+  showLoading('Saving about content...');
   const value = {
     heading: document.getElementById('aboutHeading').value,
     subheading: document.getElementById('aboutSubheading').value,
@@ -841,7 +882,8 @@ document.getElementById('saveAboutBtn').addEventListener('click', async () => {
     .from('site_content')
     .upsert({ key: 'about', value }, { onConflict: 'key' });
 
-  if (error) { showToast('Failed to save About Us: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save About Us. Please try again.', 'error'); return; }
   showToast('About Us saved', 'success');
 });
 
@@ -903,17 +945,17 @@ logoFileInput.addEventListener('change', () => {
 });
 
 async function handleLogoFile(file) {
-  if (!file.type.startsWith('image/')) {
-    showToast('Please upload an image file', 'error');
-    return;
-  }
+  if (!validateImageFile(file)) return;
 
-  // Upload to Supabase storage
+  setUploadLoading(logoZone, true);
+  showLoading('Uploading logo...');
   const fileName = `logos/${Date.now()}-${file.name}`;
   const { data, error } = await supabase.storage
     .from('uploads')
     .upload(fileName, file, { cacheControl: '3600', upsert: false });
 
+  setUploadLoading(logoZone, false);
+  hideLoading();
   if (error) {
     showToast('Upload failed: ' + error.message, 'error');
     return;
@@ -926,6 +968,7 @@ async function handleLogoFile(file) {
   document.getElementById('clientLogoImg').src = url;
   document.getElementById('clientLogoPreview').style.display = 'flex';
   logoZone.style.display = 'none';
+  showToast('Logo uploaded', 'success');
 }
 
 document.getElementById('removeLogoBtn').addEventListener('click', () => {
@@ -978,6 +1021,7 @@ window.deleteClient = async function(id) {
 
 document.getElementById('clientForm').addEventListener('submit', async (e) => {
   e.preventDefault();
+  showLoading('Saving client...');
   const id = document.getElementById('clientId').value;
 
   const payload = {
@@ -995,7 +1039,8 @@ document.getElementById('clientForm').addEventListener('submit', async (e) => {
     ({ error } = await supabase.from('clients').insert(payload));
   }
 
-  if (error) { showToast('Failed to save client: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save client. Please try again.', 'error'); return; }
   showToast(id ? 'Client updated' : 'Client added', 'success');
   closeModal('clientModal');
   loadClients();
@@ -1024,6 +1069,7 @@ async function loadContact() {
 }
 
 document.getElementById('saveContactBtn').addEventListener('click', async () => {
+  showLoading('Saving contact info...');
   const value = {
     email: document.getElementById('contactEmail').value,
     phone: document.getElementById('contactPhone').value,
@@ -1040,7 +1086,8 @@ document.getElementById('saveContactBtn').addEventListener('click', async () => 
     .from('site_content')
     .upsert({ key: 'contact', value }, { onConflict: 'key' });
 
-  if (error) { showToast('Failed to save Contact: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save Contact info. Please try again.', 'error'); return; }
   showToast('Contact info saved', 'success');
 });
 
@@ -1065,11 +1112,13 @@ document.getElementById('saveAnalyticsBtn').addEventListener('click', async () =
     return;
   }
 
+  showLoading('Saving analytics...');
   const { error } = await supabase
     .from('site_content')
     .upsert({ key: 'analytics', value: { measurementId } }, { onConflict: 'key' });
 
-  if (error) { showToast('Failed to save Analytics ID: ' + error.message, 'error'); return; }
+  hideLoading();
+  if (error) { showToast('Failed to save Analytics ID. Please try again.', 'error'); return; }
   showToast('Analytics ID saved. It will appear on the front-end.', 'success');
 });
 
@@ -1097,8 +1146,115 @@ function escapeHtml(str) {
   return div.innerHTML;
 }
 
+// ---------- Loading Overlay ----------
+function createLoadingOverlay() {
+  const overlay = document.createElement('div');
+  overlay.id = 'loadingOverlay';
+  overlay.innerHTML = `
+    <div class="loading-content">
+      <div class="loading-spinner"></div>
+      <p class="loading-text">Loading...</p>
+    </div>
+  `;
+  overlay.style.cssText = `
+    position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(10, 22, 40, 0.6); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center;
+    z-index: 10000; opacity: 0; transition: opacity 0.3s ease;
+  `;
+  const content = overlay.querySelector('.loading-content');
+  content.style.cssText = `
+    text-align: center; color: #fff;
+  `;
+  const spinner = overlay.querySelector('.loading-spinner');
+  spinner.style.cssText = `
+    width: 48px; height: 48px; border: 4px solid rgba(255,255,255,0.2);
+    border-top-color: #00b4d8; border-radius: 50%; margin: 0 auto 16px;
+    animation: adminSpin 0.8s linear infinite;
+  `;
+  const text = overlay.querySelector('.loading-text');
+  text.style.cssText = `
+    font-size: 1rem; font-weight: 500; color: #fff;
+  `;
+
+  // Add keyframes
+  const style = document.createElement('style');
+  style.textContent = `@keyframes adminSpin { to { transform: rotate(360deg); } }`;
+  document.head.appendChild(style);
+
+  document.body.appendChild(overlay);
+  return overlay;
+}
+
+const loadingOverlay = createLoadingOverlay();
+
+function showLoading(message = 'Loading...') {
+  const overlay = document.getElementById('loadingOverlay');
+  if (!overlay) return;
+  overlay.querySelector('.loading-text').textContent = message;
+  overlay.style.display = 'flex';
+  requestAnimationFrame(() => { overlay.style.opacity = '1'; });
+}
+
+function hideLoading() {
+  const overlay = document.getElementById('loadingOverlay');
+  if (!overlay) return;
+  overlay.style.opacity = '0';
+  setTimeout(() => { overlay.style.display = 'none'; }, 300);
+}
+
+// Wrap CRUD operations with loading overlay
+const origProductFormSubmit = document.getElementById('productForm').onsubmit;
+const origServiceFormSubmit = document.getElementById('serviceForm').onsubmit;
+
+// Override delete functions to show loading
+const origDeleteProduct = window.deleteProduct;
+window.deleteProduct = async function(id) {
+  if (!confirm('Delete this product?')) return;
+  showLoading('Deleting product...');
+  const { error } = await supabase.from('products').delete().eq('id', id);
+  hideLoading();
+  if (error) { showToast('Failed to delete product', 'error'); return; }
+  showToast('Product deleted', 'success');
+  loadProducts();
+};
+
+const origDeleteService = window.deleteService;
+window.deleteService = async function(id) {
+  if (!confirm('Delete this service?')) return;
+  showLoading('Deleting service...');
+  const { error } = await supabase.from('services').delete().eq('id', id);
+  hideLoading();
+  if (error) { showToast('Failed to delete service', 'error'); return; }
+  showToast('Service deleted', 'success');
+  loadServices();
+};
+
+const origDeleteClient = window.deleteClient;
+window.deleteClient = async function(id) {
+  if (!confirm('Delete this client?')) return;
+  showLoading('Deleting client...');
+  const { error } = await supabase.from('clients').delete().eq('id', id);
+  hideLoading();
+  if (error) { showToast('Failed to delete client', 'error'); return; }
+  showToast('Client deleted', 'success');
+  loadClients();
+};
+
+const origDeletePricing = window.deletePricing;
+window.deletePricing = async function(id) {
+  if (!confirm('Delete this pricing entry?')) return;
+  showLoading('Deleting pricing...');
+  const { error } = await supabase.from('pricing').delete().eq('id', id);
+  hideLoading();
+  if (error) { showToast('Failed to delete pricing', 'error'); return; }
+  showToast('Pricing deleted', 'success');
+  loadPricing();
+};
+
 // ---------- Initialize ----------
 async function init() {
+  showLoading('Loading dashboard...');
   await Promise.all([
     loadProducts(),
     loadServices(),
@@ -1109,6 +1265,7 @@ async function init() {
     loadContact(),
     loadAnalytics(),
   ]);
+  hideLoading();
 }
 
 init();

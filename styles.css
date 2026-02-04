@@ -707,6 +707,19 @@ h1, h2, h3, h4, h5 {
 .service-card:nth-child(5) .service-icon { background: #fff8e1; color: #f39c12; }
 .service-card:nth-child(6) .service-icon { background: #e8eaf6; color: #3f51b5; }
 
+.service-img {
+  width: 100%;
+  height: 160px;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 0 auto var(--space-lg);
+}
+.service-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .service-card h3 {
   font-family: var(--font-body);
   font-size: var(--fs-lg);

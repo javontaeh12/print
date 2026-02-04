@@ -90,7 +90,10 @@
 
       grid.innerHTML = services.map(s => `
         <div class="service-card animate-in visible" data-service="${escapeHtml(s.name.toLowerCase().replace(/\s+/g, '-'))}">
-          <div class="service-icon">${s.icon || '&#127912;'}</div>
+          ${s.image_url
+            ? `<div class="service-img"><img src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.name)}" loading="lazy"></div>`
+            : `<div class="service-icon">${s.icon || '&#127912;'}</div>`
+          }
           <h3>${escapeHtml(s.name)}</h3>
           <p class="service-desc">${escapeHtml(s.description || '')}</p>
           <button class="btn btn-primary btn-sm order-btn" data-service="${escapeHtml(s.name.toLowerCase().replace(/\s+/g, '-'))}">Order Now</button>

@@ -202,9 +202,54 @@ function renderProducts(filter = '', category = '') {
   `).join('');
 }
 
+// Product image upload zone
+const productImageZone = document.getElementById('productImageZone');
+const productImageFileInput = document.getElementById('productImageFile');
+
+productImageZone.addEventListener('click', () => productImageFileInput.click());
+productImageZone.addEventListener('dragover', (e) => { e.preventDefault(); productImageZone.style.borderColor = '#00b4d8'; });
+productImageZone.addEventListener('dragleave', () => { productImageZone.style.borderColor = ''; });
+productImageZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  productImageZone.style.borderColor = '';
+  if (e.dataTransfer.files.length) handleProductImageFile(e.dataTransfer.files[0]);
+});
+
+productImageFileInput.addEventListener('change', () => {
+  if (productImageFileInput.files.length) handleProductImageFile(productImageFileInput.files[0]);
+});
+
+async function handleProductImageFile(file) {
+  if (!file.type.startsWith('image/')) {
+    showToast('Please upload an image file', 'error');
+    return;
+  }
+  const fileName = `products/${Date.now()}-${file.name}`;
+  const { data, error } = await supabase.storage
+    .from('uploads')
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+  if (error) { showToast('Upload failed: ' + error.message, 'error'); return; }
+  const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(fileName);
+  const url = urlData.publicUrl;
+  document.getElementById('productImage').value = url;
+  document.getElementById('productImageImg').src = url;
+  document.getElementById('productImagePreview').style.display = 'flex';
+  productImageZone.style.display = 'none';
+  showToast('Image uploaded', 'success');
+}
+
+document.getElementById('removeProductImageBtn').addEventListener('click', () => {
+  document.getElementById('productImage').value = '';
+  document.getElementById('productImagePreview').style.display = 'none';
+  productImageZone.style.display = '';
+});
+
 document.getElementById('addProductBtn').addEventListener('click', () => {
   document.getElementById('productForm').reset();
   document.getElementById('productId').value = '';
+  document.getElementById('productImage').value = '';
+  document.getElementById('productImagePreview').style.display = 'none';
+  productImageZone.style.display = '';
   document.getElementById('productModalTitle').textContent = 'Add Product';
   document.getElementById('productActive').checked = true;
   openModal('productModal');
@@ -222,6 +267,16 @@ window.editProduct = function(id) {
   document.getElementById('productOrder').value = p.display_order || 0;
   document.getElementById('productActive').checked = p.is_active;
   document.getElementById('productModalTitle').textContent = 'Edit Product';
+
+  if (p.image_url) {
+    document.getElementById('productImageImg').src = p.image_url;
+    document.getElementById('productImagePreview').style.display = 'flex';
+    productImageZone.style.display = 'none';
+  } else {
+    document.getElementById('productImagePreview').style.display = 'none';
+    productImageZone.style.display = '';
+  }
+
   openModal('productModal');
 };
 
@@ -300,6 +355,7 @@ function renderServices(filter = '', category = '') {
 
   grid.innerHTML = filtered.map(s => `
     <div class="item-card">
+      ${s.image_url ? `<div class="item-card-img"><img src="${escapeHtml(s.image_url)}" alt="${escapeHtml(s.name)}"></div>` : ''}
       <div class="item-card-body">
         <div class="item-card-category">${escapeHtml(s.category || 'Uncategorized')}</div>
         <div class="item-card-title">${s.icon ? escapeHtml(s.icon) + ' ' : ''}${escapeHtml(s.name)}</div>
@@ -320,9 +376,54 @@ function renderServices(filter = '', category = '') {
   `).join('');
 }
 
+// Service image upload zone
+const serviceImageZone = document.getElementById('serviceImageZone');
+const serviceImageFileInput = document.getElementById('serviceImageFile');
+
+serviceImageZone.addEventListener('click', () => serviceImageFileInput.click());
+serviceImageZone.addEventListener('dragover', (e) => { e.preventDefault(); serviceImageZone.style.borderColor = '#00b4d8'; });
+serviceImageZone.addEventListener('dragleave', () => { serviceImageZone.style.borderColor = ''; });
+serviceImageZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  serviceImageZone.style.borderColor = '';
+  if (e.dataTransfer.files.length) handleServiceImageFile(e.dataTransfer.files[0]);
+});
+
+serviceImageFileInput.addEventListener('change', () => {
+  if (serviceImageFileInput.files.length) handleServiceImageFile(serviceImageFileInput.files[0]);
+});
+
+async function handleServiceImageFile(file) {
+  if (!file.type.startsWith('image/')) {
+    showToast('Please upload an image file', 'error');
+    return;
+  }
+  const fileName = `services/${Date.now()}-${file.name}`;
+  const { data, error } = await supabase.storage
+    .from('uploads')
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+  if (error) { showToast('Upload failed: ' + error.message, 'error'); return; }
+  const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(fileName);
+  const url = urlData.publicUrl;
+  document.getElementById('serviceImageUrl').value = url;
+  document.getElementById('serviceImageImg').src = url;
+  document.getElementById('serviceImagePreview').style.display = 'flex';
+  serviceImageZone.style.display = 'none';
+  showToast('Image uploaded', 'success');
+}
+
+document.getElementById('removeServiceImageBtn').addEventListener('click', () => {
+  document.getElementById('serviceImageUrl').value = '';
+  document.getElementById('serviceImagePreview').style.display = 'none';
+  serviceImageZone.style.display = '';
+});
+
 document.getElementById('addServiceBtn').addEventListener('click', () => {
   document.getElementById('serviceForm').reset();
   document.getElementById('serviceId').value = '';
+  document.getElementById('serviceImageUrl').value = '';
+  document.getElementById('serviceImagePreview').style.display = 'none';
+  serviceImageZone.style.display = '';
   document.getElementById('serviceModalTitle').textContent = 'Add Service';
   document.getElementById('serviceActive').checked = true;
   openModal('serviceModal');
@@ -336,10 +437,21 @@ window.editService = function(id) {
   document.getElementById('serviceCategory').value = s.category || '';
   document.getElementById('serviceCategoryCustom').value = '';
   document.getElementById('serviceDescription').value = s.description || '';
+  document.getElementById('serviceImageUrl').value = s.image_url || '';
   document.getElementById('serviceIcon').value = s.icon || '';
   document.getElementById('serviceOrder').value = s.display_order || 0;
   document.getElementById('serviceActive').checked = s.is_active;
   document.getElementById('serviceModalTitle').textContent = 'Edit Service';
+
+  if (s.image_url) {
+    document.getElementById('serviceImageImg').src = s.image_url;
+    document.getElementById('serviceImagePreview').style.display = 'flex';
+    serviceImageZone.style.display = 'none';
+  } else {
+    document.getElementById('serviceImagePreview').style.display = 'none';
+    serviceImageZone.style.display = '';
+  }
+
   openModal('serviceModal');
 };
 
@@ -360,6 +472,7 @@ document.getElementById('serviceForm').addEventListener('submit', async (e) => {
     name: document.getElementById('serviceName').value,
     category,
     description: document.getElementById('serviceDescription').value,
+    image_url: document.getElementById('serviceImageUrl').value || null,
     icon: document.getElementById('serviceIcon').value || null,
     display_order: parseInt(document.getElementById('serviceOrder').value) || 0,
     is_active: document.getElementById('serviceActive').checked,
@@ -645,6 +758,48 @@ document.getElementById('saveSectionsBtn').addEventListener('click', async () =>
 });
 
 // ---------- About Us ----------
+// About image upload zone
+const aboutImageZone = document.getElementById('aboutImageZone');
+const aboutImageFileInput = document.getElementById('aboutImageFile');
+
+aboutImageZone.addEventListener('click', () => aboutImageFileInput.click());
+aboutImageZone.addEventListener('dragover', (e) => { e.preventDefault(); aboutImageZone.style.borderColor = '#00b4d8'; });
+aboutImageZone.addEventListener('dragleave', () => { aboutImageZone.style.borderColor = ''; });
+aboutImageZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  aboutImageZone.style.borderColor = '';
+  if (e.dataTransfer.files.length) handleAboutImageFile(e.dataTransfer.files[0]);
+});
+
+aboutImageFileInput.addEventListener('change', () => {
+  if (aboutImageFileInput.files.length) handleAboutImageFile(aboutImageFileInput.files[0]);
+});
+
+async function handleAboutImageFile(file) {
+  if (!file.type.startsWith('image/')) {
+    showToast('Please upload an image file', 'error');
+    return;
+  }
+  const fileName = `about/${Date.now()}-${file.name}`;
+  const { data, error } = await supabase.storage
+    .from('uploads')
+    .upload(fileName, file, { cacheControl: '3600', upsert: false });
+  if (error) { showToast('Upload failed: ' + error.message, 'error'); return; }
+  const { data: urlData } = supabase.storage.from('uploads').getPublicUrl(fileName);
+  const url = urlData.publicUrl;
+  document.getElementById('aboutImage').value = url;
+  document.getElementById('aboutImageImg').src = url;
+  document.getElementById('aboutImagePreview').style.display = 'flex';
+  aboutImageZone.style.display = 'none';
+  showToast('Image uploaded', 'success');
+}
+
+document.getElementById('removeAboutImageBtn').addEventListener('click', () => {
+  document.getElementById('aboutImage').value = '';
+  document.getElementById('aboutImagePreview').style.display = 'none';
+  aboutImageZone.style.display = '';
+});
+
 async function loadAbout() {
   const { data } = await supabase
     .from('site_content')
@@ -660,6 +815,15 @@ async function loadAbout() {
     document.getElementById('aboutMission').value = about.mission || '';
     document.getElementById('aboutImage').value = about.image || '';
     document.getElementById('aboutYear').value = about.year || '';
+
+    if (about.image) {
+      document.getElementById('aboutImageImg').src = about.image;
+      document.getElementById('aboutImagePreview').style.display = 'flex';
+      aboutImageZone.style.display = 'none';
+    } else {
+      document.getElementById('aboutImagePreview').style.display = 'none';
+      aboutImageZone.style.display = '';
+    }
   }
 }
 

@@ -205,8 +205,17 @@
                 <textarea class="form-textarea" id="productDescription" rows="3"></textarea>
               </div>
               <div class="form-group">
-                <label class="form-label">Image URL</label>
-                <input type="text" class="form-input" id="productImage" placeholder="https://...">
+                <label class="form-label">Product Image</label>
+                <div class="file-upload-zone" id="productImageZone">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#adb5bd" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p>Drag & drop image here or <span class="upload-link">browse</span></p>
+                  <input type="file" id="productImageFile" accept="image/*" hidden>
+                </div>
+                <div class="image-preview" id="productImagePreview" style="display:none;">
+                  <img id="productImageImg" src="" alt="Product preview">
+                  <button type="button" class="btn btn-sm btn-danger" id="removeProductImageBtn">Remove</button>
+                </div>
+                <input type="hidden" id="productImage">
               </div>
               <div class="form-group">
                 <label class="form-label">Display Order</label>
@@ -282,8 +291,21 @@
                 <textarea class="form-textarea" id="serviceDescription" rows="3"></textarea>
               </div>
               <div class="form-group">
-                <label class="form-label">Icon (SVG or emoji)</label>
-                <input type="text" class="form-input" id="serviceIcon" placeholder="e.g. 🖨️ or paste SVG">
+                <label class="form-label">Service Image</label>
+                <div class="file-upload-zone" id="serviceImageZone">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#adb5bd" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p>Drag & drop image here or <span class="upload-link">browse</span></p>
+                  <input type="file" id="serviceImageFile" accept="image/*" hidden>
+                </div>
+                <div class="image-preview" id="serviceImagePreview" style="display:none;">
+                  <img id="serviceImageImg" src="" alt="Service preview">
+                  <button type="button" class="btn btn-sm btn-danger" id="removeServiceImageBtn">Remove</button>
+                </div>
+                <input type="hidden" id="serviceImageUrl">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Icon (emoji fallback, optional)</label>
+                <input type="text" class="form-input" id="serviceIcon" placeholder="e.g. 🖨️ (used if no image)">
               </div>
               <div class="form-group">
                 <label class="form-label">Display Order</label>
@@ -443,8 +465,17 @@
                 <textarea class="form-textarea" id="aboutMission" rows="3" placeholder="Our mission is..."></textarea>
               </div>
               <div class="form-group">
-                <label class="form-label">Image URL</label>
-                <input type="text" class="form-input" id="aboutImage" placeholder="https://...">
+                <label class="form-label">About Image</label>
+                <div class="file-upload-zone" id="aboutImageZone">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#adb5bd" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p>Drag & drop image here or <span class="upload-link">browse</span></p>
+                  <input type="file" id="aboutImageFile" accept="image/*" hidden>
+                </div>
+                <div class="image-preview" id="aboutImagePreview" style="display:none;">
+                  <img id="aboutImageImg" src="" alt="About preview">
+                  <button type="button" class="btn btn-sm btn-danger" id="removeAboutImageBtn">Remove</button>
+                </div>
+                <input type="hidden" id="aboutImage">
               </div>
               <div class="form-group">
                 <label class="form-label">Year Established</label>

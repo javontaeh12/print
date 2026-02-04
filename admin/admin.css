@@ -835,20 +835,26 @@ body {
   cursor: pointer;
 }
 
-.logo-preview {
+.logo-preview, .image-preview {
   margin-top: 0.75rem;
   display: flex;
   align-items: center;
   gap: 1rem;
 }
 
-.logo-preview img {
+.logo-preview img, .image-preview img {
   width: 64px;
   height: 64px;
   object-fit: contain;
   border-radius: var(--radius-md);
   border: 1px solid var(--gray-200);
   background: var(--gray-50);
+}
+
+.image-preview img {
+  width: 120px;
+  height: 80px;
+  object-fit: cover;
 }
 
 /* ---------- Modals ---------- */

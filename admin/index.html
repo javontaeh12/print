@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrintCraft Studio — Admin Portal</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <div class="sidebar-logo">
+        <div class="monogram">P</div>
+        <div class="logo-text">Print<span>Craft</span></div>
+      </div>
+      <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle sidebar">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="#" class="nav-item active" data-tab="dashboard">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        <span>Dashboard</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="products">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+        <span>Products</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="services">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+        <span>Services</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="pricing">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+        <span>Pricing</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="sections">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+        <span>Sections</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="about">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        <span>About Us</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="clients">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87"/><path d="M16 3.13a4 4 0 010 7.75"/></svg>
+        <span>Our Clients</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="contact">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        <span>Contact</span>
+      </a>
+      <a href="#" class="nav-item" data-tab="analytics">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+        <span>Analytics</span>
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <div class="admin-info" id="adminInfo">
+        <img src="" alt="" class="admin-avatar" id="adminAvatar">
+        <span class="admin-name" id="adminName">Admin</span>
+      </div>
+      <button class="btn-logout" id="logoutBtn">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Sign Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content" id="mainContent">
+    <!-- Top Bar -->
+    <header class="topbar">
+      <button class="mobile-menu-btn" id="mobileMenuBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>
+      </button>
+      <h1 class="page-title" id="pageTitle">Dashboard</h1>
+      <div class="topbar-actions">
+        <a href="/" class="btn btn-outline btn-sm" target="_blank">View Site</a>
+      </div>
+    </header>
+
+    <!-- Tab Content Area -->
+    <div class="content-area">
+
+      <!-- Dashboard Tab -->
+      <section class="tab-content active" id="tab-dashboard">
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(0,180,216,0.15);color:#00b4d8;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statProducts">0</span>
+              <span class="stat-label">Products</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(255,107,53,0.15);color:#ff6b35;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statServices">0</span>
+              <span class="stat-label">Services</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(46,204,113,0.15);color:#2ecc71;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statClients">0</span>
+              <span class="stat-label">Clients</span>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon" style="background:rgba(243,156,18,0.15);color:#f39c12;">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/></svg>
+            </div>
+            <div class="stat-info">
+              <span class="stat-value" id="statSections">0</span>
+              <span class="stat-label">Active Sections</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <h2>Quick Actions</h2>
+          </div>
+          <div class="card-body">
+            <div class="quick-actions">
+              <button class="quick-action-btn" data-goto="products">Add Product</button>
+              <button class="quick-action-btn" data-goto="services">Add Service</button>
+              <button class="quick-action-btn" data-goto="clients">Add Client</button>
+              <button class="quick-action-btn" data-goto="sections">Manage Sections</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Products Tab -->
+      <section class="tab-content" id="tab-products">
+        <div class="tab-header">
+          <div>
+            <h2>Products</h2>
+            <p class="tab-description">Manage your print products organized by category</p>
+          </div>
+          <button class="btn btn-primary" id="addProductBtn">+ Add Product</button>
+        </div>
+
+        <!-- Category Filter -->
+        <div class="filter-bar">
+          <select class="form-select" id="productCategoryFilter">
+            <option value="">All Categories</option>
+          </select>
+          <input type="text" class="form-input" id="productSearch" placeholder="Search products...">
+        </div>
+
+        <div class="items-grid" id="productsGrid">
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#495057" stroke-width="1.5"><path d="M21 16V8a2 2 0 00-1-1.73l-7-4a2 2 0 00-2 0l-7 4A2 2 0 003 8v8a2 2 0 001 1.73l7 4a2 2 0 002 0l7-4A2 2 0 0021 16z"/></svg>
+            <p>No products yet. Add your first product.</p>
+          </div>
+        </div>
+
+        <!-- Product Modal -->
+        <div class="modal-overlay" id="productModal">
+          <div class="modal">
+            <div class="modal-header">
+              <h3 id="productModalTitle">Add Product</h3>
+              <button class="modal-close" data-close="productModal">&times;</button>
+            </div>
+            <form id="productForm" class="modal-body">
+              <input type="hidden" id="productId">
+              <div class="form-group">
+                <label class="form-label">Product Name</label>
+                <input type="text" class="form-input" id="productName" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <div class="form-row">
+                  <select class="form-select" id="productCategory">
+                    <option value="">Select or type new</option>
+                    <option value="Business Cards">Business Cards</option>
+                    <option value="Flyers & Leaflets">Flyers & Leaflets</option>
+                    <option value="Posters">Posters</option>
+                    <option value="Brochures">Brochures</option>
+                    <option value="Stickers & Labels">Stickers & Labels</option>
+                    <option value="Banners & Signs">Banners & Signs</option>
+                    <option value="Packaging">Packaging</option>
+                    <option value="Invitations">Invitations</option>
+                  </select>
+                  <input type="text" class="form-input" id="productCategoryCustom" placeholder="Or type new category">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="productDescription" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Image URL</label>
+                <input type="text" class="form-input" id="productImage" placeholder="https://...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Display Order</label>
+                <input type="number" class="form-input" id="productOrder" value="0" min="0">
+              </div>
+              <div class="form-check">
+                <input type="checkbox" id="productActive" checked>
+                <label for="productActive">Active (visible on website)</label>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close="productModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Product</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Services Tab -->
+      <section class="tab-content" id="tab-services">
+        <div class="tab-header">
+          <div>
+            <h2>Printer Services</h2>
+            <p class="tab-description">Manage printing services organized by category</p>
+          </div>
+          <button class="btn btn-primary" id="addServiceBtn">+ Add Service</button>
+        </div>
+
+        <div class="filter-bar">
+          <select class="form-select" id="serviceCategoryFilter">
+            <option value="">All Categories</option>
+          </select>
+          <input type="text" class="form-input" id="serviceSearch" placeholder="Search services...">
+        </div>
+
+        <div class="items-grid" id="servicesGrid">
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#495057" stroke-width="1.5"><path d="M14.7 6.3a1 1 0 000 1.4l1.6 1.6a1 1 0 001.4 0l3.77-3.77a6 6 0 01-7.94 7.94l-6.91 6.91a2.12 2.12 0 01-3-3l6.91-6.91a6 6 0 017.94-7.94l-3.76 3.76z"/></svg>
+            <p>No services yet. Add your first service.</p>
+          </div>
+        </div>
+
+        <!-- Service Modal -->
+        <div class="modal-overlay" id="serviceModal">
+          <div class="modal">
+            <div class="modal-header">
+              <h3 id="serviceModalTitle">Add Service</h3>
+              <button class="modal-close" data-close="serviceModal">&times;</button>
+            </div>
+            <form id="serviceForm" class="modal-body">
+              <input type="hidden" id="serviceId">
+              <div class="form-group">
+                <label class="form-label">Service Name</label>
+                <input type="text" class="form-input" id="serviceName" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <div class="form-row">
+                  <select class="form-select" id="serviceCategory">
+                    <option value="">Select or type new</option>
+                    <option value="Digital Printing">Digital Printing</option>
+                    <option value="Offset Printing">Offset Printing</option>
+                    <option value="Large Format">Large Format</option>
+                    <option value="Finishing">Finishing</option>
+                    <option value="Design Services">Design Services</option>
+                    <option value="Binding">Binding</option>
+                  </select>
+                  <input type="text" class="form-input" id="serviceCategoryCustom" placeholder="Or type new category">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description</label>
+                <textarea class="form-textarea" id="serviceDescription" rows="3"></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Icon (SVG or emoji)</label>
+                <input type="text" class="form-input" id="serviceIcon" placeholder="e.g. 🖨️ or paste SVG">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Display Order</label>
+                <input type="number" class="form-input" id="serviceOrder" value="0" min="0">
+              </div>
+              <div class="form-check">
+                <input type="checkbox" id="serviceActive" checked>
+                <label for="serviceActive">Active (visible on website)</label>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close="serviceModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Service</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Pricing Tab -->
+      <section class="tab-content" id="tab-pricing">
+        <div class="tab-header">
+          <div>
+            <h2>Pricing</h2>
+            <p class="tab-description">Set fixed prices or mark items as quote-only</p>
+          </div>
+          <button class="btn btn-primary" id="addPricingBtn">+ Add Price Entry</button>
+        </div>
+
+        <div class="filter-bar">
+          <select class="form-select" id="pricingTypeFilter">
+            <option value="">All Types</option>
+            <option value="fixed">Fixed Price</option>
+            <option value="quote">Request Quote</option>
+          </select>
+          <input type="text" class="form-input" id="pricingSearch" placeholder="Search pricing...">
+        </div>
+
+        <div class="table-container">
+          <table class="data-table" id="pricingTable">
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Category</th>
+                <th>Type</th>
+                <th>Price</th>
+                <th>Unit</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="pricingTableBody">
+              <tr class="empty-row">
+                <td colspan="6">
+                  <div class="empty-state">
+                    <p>No pricing entries yet.</p>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pricing Modal -->
+        <div class="modal-overlay" id="pricingModal">
+          <div class="modal">
+            <div class="modal-header">
+              <h3 id="pricingModalTitle">Add Price Entry</h3>
+              <button class="modal-close" data-close="pricingModal">&times;</button>
+            </div>
+            <form id="pricingForm" class="modal-body">
+              <input type="hidden" id="pricingId">
+              <div class="form-group">
+                <label class="form-label">Item Name</label>
+                <input type="text" class="form-input" id="pricingName" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Category</label>
+                <input type="text" class="form-input" id="pricingCategory" placeholder="e.g. Business Cards">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Pricing Type</label>
+                <select class="form-select" id="pricingType">
+                  <option value="fixed">Fixed Price</option>
+                  <option value="quote">Request Quote</option>
+                </select>
+              </div>
+              <div id="fixedPriceFields">
+                <div class="form-row">
+                  <div class="form-group">
+                    <label class="form-label">Price ($)</label>
+                    <input type="number" class="form-input" id="pricingAmount" step="0.01" min="0">
+                  </div>
+                  <div class="form-group">
+                    <label class="form-label">Unit</label>
+                    <input type="text" class="form-input" id="pricingUnit" placeholder="e.g. per 100, each, per sq ft">
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Description / Notes</label>
+                <textarea class="form-textarea" id="pricingDescription" rows="2"></textarea>
+              </div>
+              <div class="form-check">
+                <input type="checkbox" id="pricingActive" checked>
+                <label for="pricingActive">Active (visible on website)</label>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close="pricingModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Pricing</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Sections Manager Tab -->
+      <section class="tab-content" id="tab-sections">
+        <div class="tab-header">
+          <div>
+            <h2>Section Manager</h2>
+            <p class="tab-description">Drag to reorder and toggle sections on/off</p>
+          </div>
+          <button class="btn btn-primary" id="saveSectionsBtn">Save Order</button>
+        </div>
+
+        <div class="sections-list" id="sectionsList">
+          <!-- Populated by JS -->
+        </div>
+      </section>
+
+      <!-- About Us Tab -->
+      <section class="tab-content" id="tab-about">
+        <div class="tab-header">
+          <div>
+            <h2>About Us</h2>
+            <p class="tab-description">Edit the About Us content displayed on the website</p>
+          </div>
+          <button class="btn btn-primary" id="saveAboutBtn">Save Changes</button>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <form id="aboutForm">
+              <div class="form-group">
+                <label class="form-label">Heading</label>
+                <input type="text" class="form-input" id="aboutHeading" value="About PrintCraft Studio">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Subheading</label>
+                <input type="text" class="form-input" id="aboutSubheading" placeholder="Optional tagline">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Main Content</label>
+                <textarea class="form-textarea" id="aboutContent" rows="8" placeholder="Tell your story..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Mission Statement</label>
+                <textarea class="form-textarea" id="aboutMission" rows="3" placeholder="Our mission is..."></textarea>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Image URL</label>
+                <input type="text" class="form-input" id="aboutImage" placeholder="https://...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Year Established</label>
+                <input type="number" class="form-input" id="aboutYear" placeholder="e.g. 2020">
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Our Clients Tab -->
+      <section class="tab-content" id="tab-clients">
+        <div class="tab-header">
+          <div>
+            <h2>Our Clients</h2>
+            <p class="tab-description">Manage client logos and names displayed on the website</p>
+          </div>
+          <button class="btn btn-primary" id="addClientBtn">+ Add Client</button>
+        </div>
+
+        <div class="items-grid clients-grid" id="clientsGrid">
+          <div class="empty-state">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#495057" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+            <p>No clients yet. Add your first client.</p>
+          </div>
+        </div>
+
+        <!-- Client Modal -->
+        <div class="modal-overlay" id="clientModal">
+          <div class="modal">
+            <div class="modal-header">
+              <h3 id="clientModalTitle">Add Client</h3>
+              <button class="modal-close" data-close="clientModal">&times;</button>
+            </div>
+            <form id="clientForm" class="modal-body">
+              <input type="hidden" id="clientId">
+              <div class="form-group">
+                <label class="form-label">Client / Company Name</label>
+                <input type="text" class="form-input" id="clientName" required>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Logo</label>
+                <div class="file-upload-zone" id="clientLogoZone">
+                  <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#adb5bd" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                  <p>Drag & drop logo here or <span class="upload-link">browse</span></p>
+                  <input type="file" id="clientLogoFile" accept="image/*" hidden>
+                </div>
+                <div class="logo-preview" id="clientLogoPreview" style="display:none;">
+                  <img id="clientLogoImg" src="" alt="Logo preview">
+                  <button type="button" class="btn btn-sm btn-danger" id="removeLogoBtn">Remove</button>
+                </div>
+                <input type="hidden" id="clientLogoUrl">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Website URL (optional)</label>
+                <input type="text" class="form-input" id="clientWebsite" placeholder="https://...">
+              </div>
+              <div class="form-group">
+                <label class="form-label">Display Order</label>
+                <input type="number" class="form-input" id="clientOrder" value="0" min="0">
+              </div>
+              <div class="form-check">
+                <input type="checkbox" id="clientActive" checked>
+                <label for="clientActive">Active (visible on website)</label>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-outline" data-close="clientModal">Cancel</button>
+                <button type="submit" class="btn btn-primary">Save Client</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Contact Tab -->
+      <section class="tab-content" id="tab-contact">
+        <div class="tab-header">
+          <div>
+            <h2>Contact Us</h2>
+            <p class="tab-description">Edit the contact information displayed on the website</p>
+          </div>
+          <button class="btn btn-primary" id="saveContactBtn">Save Changes</button>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <form id="contactForm">
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Email</label>
+                  <input type="email" class="form-input" id="contactEmail" placeholder="hello@printcraft.com">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Phone</label>
+                  <input type="text" class="form-input" id="contactPhone" placeholder="(555) 123-4567">
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Address</label>
+                <textarea class="form-textarea" id="contactAddress" rows="2" placeholder="123 Main St, City, State ZIP"></textarea>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Business Hours</label>
+                  <input type="text" class="form-input" id="contactHours" placeholder="Mon-Fri: 9am - 6pm">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Google Maps Embed URL</label>
+                  <input type="text" class="form-input" id="contactMapUrl" placeholder="https://maps.google.com/...">
+                </div>
+              </div>
+              <h3 class="form-section-title">Social Media Links</h3>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Facebook</label>
+                  <input type="text" class="form-input" id="contactFacebook" placeholder="https://facebook.com/...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">Instagram</label>
+                  <input type="text" class="form-input" id="contactInstagram" placeholder="https://instagram.com/...">
+                </div>
+              </div>
+              <div class="form-row">
+                <div class="form-group">
+                  <label class="form-label">Twitter / X</label>
+                  <input type="text" class="form-input" id="contactTwitter" placeholder="https://x.com/...">
+                </div>
+                <div class="form-group">
+                  <label class="form-label">LinkedIn</label>
+                  <input type="text" class="form-input" id="contactLinkedin" placeholder="https://linkedin.com/...">
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Analytics Tab -->
+      <section class="tab-content" id="tab-analytics">
+        <div class="tab-header">
+          <div>
+            <h2>Google Analytics</h2>
+            <p class="tab-description">Connect and view your Google Analytics data</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <form id="analyticsForm">
+              <div class="form-group">
+                <label class="form-label">Google Analytics Measurement ID</label>
+                <input type="text" class="form-input" id="analyticsId" placeholder="G-XXXXXXXXXX">
+                <p class="form-help">Found in Google Analytics > Admin > Data Streams > Web</p>
+              </div>
+              <button type="button" class="btn btn-primary" id="saveAnalyticsBtn">Save & Activate</button>
+            </form>
+          </div>
+        </div>
+
+        <div class="card" style="margin-top:1.5rem;">
+          <div class="card-header">
+            <h3>Analytics Dashboard</h3>
+          </div>
+          <div class="card-body">
+            <div class="analytics-placeholder" id="analyticsPlaceholder">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="#495057" stroke-width="1.5"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+              <p>Enter your Google Analytics Measurement ID to view data here.</p>
+              <p class="form-help">Analytics data will also be automatically added to your website's front-end.</p>
+            </div>
+            <div id="analyticsEmbed" style="display:none;">
+              <!-- GA embed or iframe will go here -->
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Toast Notifications -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script type="module" src="admin.js"></script>
+</body>
+</html>

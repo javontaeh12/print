@@ -1,0 +1,642 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PrintCraft Studio — Premium Printing, Delivered Fast</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- ========== HEADER ========== -->
+  <header class="header" id="header">
+    <div class="container header-inner">
+
+      <!-- Logo -->
+      <a href="#" class="logo">
+        <div class="logo-monogram">P</div>
+        <div class="logo-text">Print<span>Craft</span></div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="nav-desktop">
+        <ul class="nav-links">
+          <li class="nav-item-mega">
+            <a href="#services" class="nav-link">Services <span class="arrow">&#9660;</span></a>
+            <div class="mega-menu">
+              <div class="mega-col">
+                <h4>Print Products</h4>
+                <ul>
+                  <li><a href="#services">Business Cards</a></li>
+                  <li><a href="#services">Flyers &amp; Leaflets</a></li>
+                  <li><a href="#services">Posters</a></li>
+                  <li><a href="#services">Brochures</a></li>
+                </ul>
+              </div>
+              <div class="mega-col">
+                <h4>Specialty</h4>
+                <ul>
+                  <li><a href="#services">Stickers &amp; Labels</a></li>
+                  <li><a href="#services">Banners &amp; Signs</a></li>
+                  <li><a href="#services">Packaging</a></li>
+                  <li><a href="#services">Invitations</a></li>
+                </ul>
+              </div>
+              <div class="mega-col">
+                <h4>Finishing</h4>
+                <ul>
+                  <li><a href="#services">Embossing</a></li>
+                  <li><a href="#services">Foil Stamping</a></li>
+                  <li><a href="#services">Die Cutting</a></li>
+                  <li><a href="#services">Letterpress</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+          <li><a href="#designer" class="nav-link">Design Tool</a></li>
+          <li><a href="#booking" class="nav-link">Book a Service</a></li>
+          <li><a href="#upload" class="nav-link">Upload Files</a></li>
+        </ul>
+
+        <!-- Search -->
+        <div class="search-wrapper">
+          <div class="search-bar">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input type="text" id="searchInput" placeholder="Search services..." autocomplete="off">
+          </div>
+          <div class="search-results" id="searchResults"></div>
+        </div>
+      </nav>
+
+      <!-- Hamburger -->
+      <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+
+    <!-- Mobile Nav -->
+    <div class="mobile-nav" id="mobileNav">
+      <div class="mobile-search">
+        <div class="search-bar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" class="mobile-search-input" placeholder="Search services..." autocomplete="off">
+        </div>
+        <div class="search-results mobile-search-results"></div>
+      </div>
+      <div class="mobile-nav-links">
+        <button class="mobile-mega-toggle">Services <span class="arrow">&#9660;</span></button>
+        <div class="mobile-mega-content">
+          <h4>Print Products</h4>
+          <ul>
+            <li><a href="#services">Business Cards</a></li>
+            <li><a href="#services">Flyers &amp; Leaflets</a></li>
+            <li><a href="#services">Posters</a></li>
+            <li><a href="#services">Brochures</a></li>
+          </ul>
+          <h4>Specialty</h4>
+          <ul>
+            <li><a href="#services">Stickers &amp; Labels</a></li>
+            <li><a href="#services">Banners &amp; Signs</a></li>
+            <li><a href="#services">Packaging</a></li>
+            <li><a href="#services">Invitations</a></li>
+          </ul>
+          <h4>Finishing</h4>
+          <ul>
+            <li><a href="#services">Embossing</a></li>
+            <li><a href="#services">Foil Stamping</a></li>
+            <li><a href="#services">Die Cutting</a></li>
+            <li><a href="#services">Letterpress</a></li>
+          </ul>
+        </div>
+        <a href="#services" class="mobile-nav-link">Services</a>
+        <a href="#designer" class="mobile-nav-link">Design Tool</a>
+        <a href="#booking" class="mobile-nav-link">Book a Service</a>
+        <a href="#upload" class="mobile-nav-link">Upload Files</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========== HERO ========== -->
+  <section class="hero" id="hero">
+    <div class="container hero-content">
+      <h1>Premium Printing, Delivered Fast.</h1>
+      <p>From business cards to banners, get stunning print products with fast turnaround and free shipping on every order.</p>
+      <div class="hero-buttons">
+        <a href="#booking" class="btn btn-primary btn-lg">Start Your Order</a>
+        <a href="#designer" class="btn btn-outline btn-lg">Design Online</a>
+      </div>
+      <div class="hero-badges">
+        <div class="hero-badge">
+          <div class="hero-badge-icon">&#9889;</div>
+          <span>24hr Turnaround</span>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-icon">&#128666;</div>
+          <span>Free Shipping</span>
+        </div>
+        <div class="hero-badge">
+          <div class="hero-badge-icon">&#11088;</div>
+          <span>5-Star Reviews</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== POPULAR SERVICES ========== -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-header animate-in">
+        <h2>Popular Services</h2>
+        <p>High-quality printing solutions for every need</p>
+      </div>
+      <div class="services-grid">
+
+        <div class="service-card animate-in" data-service="business-cards">
+          <div class="service-icon">&#127183;</div>
+          <h3>Business Cards</h3>
+          <p class="service-desc">Make a lasting impression with premium business cards on thick cardstock with custom finishes.</p>
+          <div class="service-price">Starting at $19.99</div>
+          <button class="btn btn-primary btn-sm order-btn" data-service="business-cards">Order Now</button>
+        </div>
+
+        <div class="service-card animate-in" data-service="flyers">
+          <div class="service-icon">&#128196;</div>
+          <h3>Flyers</h3>
+          <p class="service-desc">Eye-catching flyers and leaflets printed on vibrant, high-quality paper in any size.</p>
+          <div class="service-price">Starting at $29.99</div>
+          <button class="btn btn-primary btn-sm order-btn" data-service="flyers">Order Now</button>
+        </div>
+
+        <div class="service-card animate-in" data-service="posters">
+          <div class="service-icon">&#128444;</div>
+          <h3>Posters</h3>
+          <p class="service-desc">Large format posters with vivid colors, perfect for events, promotions, and decor.</p>
+          <div class="service-price">Starting at $14.99</div>
+          <button class="btn btn-primary btn-sm order-btn" data-service="posters">Order Now</button>
+        </div>
+
+        <div class="service-card animate-in" data-service="brochures">
+          <div class="service-icon">&#128220;</div>
+          <h3>Brochures</h3>
+          <p class="service-desc">Professional bi-fold and tri-fold brochures that tell your brand story beautifully.</p>
+          <div class="service-price">Starting at $49.99</div>
+          <button class="btn btn-primary btn-sm order-btn" data-service="brochures">Order Now</button>
+        </div>
+
+        <div class="service-card animate-in" data-service="stickers">
+          <div class="service-icon">&#11088;</div>
+          <h3>Stickers</h3>
+          <p class="service-desc">Custom die-cut stickers and labels on durable vinyl or paper with any shape.</p>
+          <div class="service-price">Starting at $9.99</div>
+          <button class="btn btn-primary btn-sm order-btn" data-service="stickers">Order Now</button>
+        </div>
+
+        <div class="service-card animate-in" data-service="banners">
+          <div class="service-icon">&#127987;</div>
+          <h3>Banners</h3>
+          <p class="service-desc">Indoor and outdoor banners on heavy-duty vinyl with grommets and hemmed edges.</p>
+          <div class="service-price">Starting at $39.99</div>
+          <button class="btn btn-primary btn-sm order-btn" data-service="banners">Order Now</button>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== DESIGN TOOL ========== -->
+  <section class="designer" id="designer">
+    <div class="container">
+      <div class="section-header animate-in">
+        <h2>Business Card Designer</h2>
+        <p>Design your perfect business card right in the browser</p>
+      </div>
+      <div class="designer-layout">
+
+        <!-- Toolbar -->
+        <div class="designer-toolbar">
+          <div class="toolbar-section">
+            <h4>Card Side</h4>
+            <div class="side-toggle">
+              <button class="active" data-side="front">Front</button>
+              <button data-side="back">Back</button>
+            </div>
+          </div>
+
+          <div class="toolbar-section">
+            <h4>Background</h4>
+            <div class="color-swatches" id="bgSwatches">
+              <div class="swatch active" style="background:#ffffff" data-color="#ffffff"></div>
+              <div class="swatch" style="background:#0a1628" data-color="#0a1628"></div>
+              <div class="swatch" style="background:#00b4d8" data-color="#00b4d8"></div>
+              <div class="swatch" style="background:#ff6b35" data-color="#ff6b35"></div>
+              <div class="swatch" style="background:#2ecc71" data-color="#2ecc71"></div>
+              <div class="swatch" style="background:#9b59b6" data-color="#9b59b6"></div>
+              <div class="swatch" style="background:#f1c40f" data-color="#f1c40f"></div>
+              <div class="swatch" style="background:#e74c3c" data-color="#e74c3c"></div>
+            </div>
+            <div class="custom-color-row">
+              <input type="color" id="customBgColor" value="#ffffff">
+              <label>Custom</label>
+            </div>
+          </div>
+
+          <div class="toolbar-section">
+            <h4>Add Text</h4>
+            <input type="text" class="toolbar-input" id="textInput" placeholder="Enter text...">
+            <div class="toolbar-row">
+              <select id="fontSelect">
+                <option value="Inter">Inter</option>
+                <option value="Playfair Display">Playfair</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier</option>
+              </select>
+              <input type="number" id="fontSizeInput" value="24" min="8" max="120" style="width:60px">
+            </div>
+            <div class="custom-color-row" style="margin-bottom:8px">
+              <input type="color" id="textColorInput" value="#000000">
+              <label>Text Color</label>
+            </div>
+            <button class="toolbar-btn accent" id="addTextBtn">Add Text</button>
+          </div>
+
+          <div class="toolbar-section">
+            <h4>Add Logo / Image</h4>
+            <button class="toolbar-btn" id="addImageBtn">Upload Image</button>
+            <input type="file" id="imageUploadInput" accept="image/*" style="display:none">
+          </div>
+
+          <div class="toolbar-section">
+            <h4>Templates</h4>
+            <div class="template-grid">
+              <div class="template-thumb" data-template="minimal" style="background:linear-gradient(135deg,#fff,#f8f9fa)">
+                <span>Minimal</span>
+              </div>
+              <div class="template-thumb" data-template="bold" style="background:linear-gradient(135deg,#0a1628,#00b4d8)">
+                <span>Bold</span>
+              </div>
+              <div class="template-thumb" data-template="classic" style="background:linear-gradient(135deg,#2c3e50,#8e44ad)">
+                <span>Classic</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Canvas -->
+        <div class="designer-canvas-area">
+          <div class="canvas-controls">
+            <button id="undoBtn" disabled>&#8630; Undo</button>
+            <button id="redoBtn" disabled>&#8631; Redo</button>
+            <button id="clearBtn">Clear</button>
+            <button id="downloadBtn">&#8615; Download PNG</button>
+          </div>
+          <canvas id="designCanvas" width="700" height="400"></canvas>
+        </div>
+
+        <!-- Properties Panel -->
+        <div class="designer-properties" id="propsPanel">
+          <h4>Element Properties</h4>
+          <div class="prop-empty" id="propEmpty">Select an element on the canvas to edit its properties.</div>
+          <div id="propControls" style="display:none">
+            <div class="prop-group">
+              <label>Content</label>
+              <input type="text" id="propContent">
+            </div>
+            <div class="prop-group">
+              <label>Font Size</label>
+              <input type="number" id="propFontSize" min="8" max="120">
+            </div>
+            <div class="prop-group">
+              <label>Color</label>
+              <input type="color" id="propColor">
+            </div>
+            <div class="prop-group">
+              <label>Font</label>
+              <select id="propFont">
+                <option value="Inter">Inter</option>
+                <option value="Playfair Display">Playfair</option>
+                <option value="Georgia">Georgia</option>
+                <option value="Arial">Arial</option>
+                <option value="Courier New">Courier</option>
+              </select>
+            </div>
+            <button class="prop-delete-btn" id="propDeleteBtn">Delete Element</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== BOOKING FORM ========== -->
+  <section class="booking" id="booking">
+    <div class="container">
+      <div class="section-header animate-in">
+        <h2>Book a Print Service</h2>
+        <p>Fill out the form below to get started on your order</p>
+      </div>
+      <div class="booking-form-wrapper animate-in">
+
+        <!-- Step Indicators -->
+        <div class="step-indicators">
+          <div class="step-indicator active" data-step="1">
+            <span class="step-num">1</span>
+            <span class="step-label">Contact</span>
+          </div>
+          <div class="step-indicator" data-step="2">
+            <span class="step-num">2</span>
+            <span class="step-label">Service</span>
+          </div>
+          <div class="step-indicator" data-step="3">
+            <span class="step-num">3</span>
+            <span class="step-label">Print Specs</span>
+          </div>
+          <div class="step-indicator" data-step="4">
+            <span class="step-num">4</span>
+            <span class="step-label">Additional</span>
+          </div>
+        </div>
+
+        <form id="bookingForm" novalidate>
+          <div class="form-steps">
+
+            <!-- Step 1: Contact -->
+            <div class="form-step active" data-step="1">
+              <h3>Contact Information</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>First Name <span class="required">*</span></label>
+                  <input type="text" name="firstName" required>
+                  <div class="error-msg">First name is required</div>
+                </div>
+                <div class="form-group">
+                  <label>Last Name <span class="required">*</span></label>
+                  <input type="text" name="lastName" required>
+                  <div class="error-msg">Last name is required</div>
+                </div>
+                <div class="form-group">
+                  <label>Email <span class="required">*</span></label>
+                  <input type="email" name="email" required>
+                  <div class="error-msg">Valid email is required</div>
+                </div>
+                <div class="form-group">
+                  <label>Phone <span class="required">*</span></label>
+                  <input type="tel" name="phone" required>
+                  <div class="error-msg">Phone number is required</div>
+                </div>
+                <div class="form-group full-width">
+                  <label>Company</label>
+                  <input type="text" name="company">
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 2: Service -->
+            <div class="form-step" data-step="2">
+              <h3>Select Your Service</h3>
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label>Service Type <span class="required">*</span></label>
+                  <select name="serviceType" id="serviceTypeSelect" required>
+                    <option value="">Choose a service...</option>
+                    <option value="business-cards">Business Cards</option>
+                    <option value="flyers">Flyers &amp; Leaflets</option>
+                    <option value="posters">Posters</option>
+                    <option value="brochures">Brochures</option>
+                    <option value="stickers">Stickers &amp; Labels</option>
+                    <option value="banners">Banners &amp; Signs</option>
+                    <option value="packaging">Custom Packaging</option>
+                    <option value="invitations">Invitations</option>
+                  </select>
+                  <div class="error-msg">Please select a service</div>
+                </div>
+                <div class="form-group">
+                  <label>Quantity <span class="required">*</span></label>
+                  <select name="quantity" required>
+                    <option value="">Select quantity...</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                    <option value="250">250</option>
+                    <option value="500">500</option>
+                    <option value="1000">1,000</option>
+                    <option value="2500">2,500</option>
+                    <option value="custom">Custom</option>
+                  </select>
+                  <div class="error-msg">Please select a quantity</div>
+                </div>
+                <div class="form-group" id="customQtyGroup" style="display:none">
+                  <label>Custom Quantity <span class="required">*</span></label>
+                  <input type="number" name="customQuantity" min="1" placeholder="Enter quantity">
+                  <div class="error-msg">Enter a valid quantity</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 3: Print Specs -->
+            <div class="form-step" data-step="3">
+              <h3>Print Specifications</h3>
+              <div class="form-grid">
+                <div class="form-group">
+                  <label>Paper Type</label>
+                  <select name="paperType">
+                    <option value="matte">Matte</option>
+                    <option value="glossy">Glossy</option>
+                    <option value="uncoated">Uncoated</option>
+                    <option value="recycled">Recycled</option>
+                    <option value="textured">Textured</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Paper Weight</label>
+                  <select name="paperWeight">
+                    <option value="80gsm">80 gsm (Standard)</option>
+                    <option value="120gsm">120 gsm</option>
+                    <option value="170gsm">170 gsm</option>
+                    <option value="250gsm">250 gsm</option>
+                    <option value="350gsm">350 gsm (Thick)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Size</label>
+                  <select name="size">
+                    <option value="standard">Standard (3.5" x 2")</option>
+                    <option value="a4">A4</option>
+                    <option value="a5">A5</option>
+                    <option value="a6">A6</option>
+                    <option value="letter">Letter (8.5" x 11")</option>
+                    <option value="custom">Custom Size</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Finish</label>
+                  <select name="finish">
+                    <option value="none">None</option>
+                    <option value="gloss-laminate">Gloss Laminate</option>
+                    <option value="matte-laminate">Matte Laminate</option>
+                    <option value="soft-touch">Soft Touch</option>
+                    <option value="spot-uv">Spot UV</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Print Sides</label>
+                  <select name="printSides">
+                    <option value="single">Single Sided</option>
+                    <option value="double">Double Sided</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Color Mode</label>
+                  <select name="colorMode">
+                    <option value="cmyk">Full Color (CMYK)</option>
+                    <option value="bw">Black &amp; White</option>
+                    <option value="spot">Spot Color (Pantone)</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label>Corner Style</label>
+                  <select name="cornerStyle">
+                    <option value="square">Square Corners</option>
+                    <option value="rounded">Rounded Corners</option>
+                  </select>
+                </div>
+                <div class="form-group full-width">
+                  <label>Special Finishing</label>
+                  <div class="checkbox-group">
+                    <label class="checkbox-item"><input type="checkbox" name="embossing"> Embossing</label>
+                    <label class="checkbox-item"><input type="checkbox" name="foil"> Foil Stamping</label>
+                    <label class="checkbox-item"><input type="checkbox" name="dieCut"> Die-Cut</label>
+                    <label class="checkbox-item"><input type="checkbox" name="letterpress"> Letterpress</label>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Step 4: Additional -->
+            <div class="form-step" data-step="4">
+              <h3>Additional Details</h3>
+              <div class="form-grid">
+                <div class="form-group full-width">
+                  <label>Turnaround Time</label>
+                  <select name="turnaround">
+                    <option value="standard">Standard (5-7 business days)</option>
+                    <option value="rush">Rush (2-3 business days)</option>
+                    <option value="express">Express (24 hours)</option>
+                  </select>
+                </div>
+                <div class="form-group full-width">
+                  <label>Upload Design File</label>
+                  <input type="file" name="designFile" accept=".pdf,.ai,.psd,.eps,.png,.jpg,.svg,.tiff">
+                </div>
+                <div class="form-group full-width">
+                  <label>Special Instructions</label>
+                  <textarea name="instructions" rows="4" placeholder="Any additional details or requests..."></textarea>
+                </div>
+                <div class="full-width">
+                  <div class="proof-checkbox">
+                    <input type="checkbox" id="proofApproval" name="proofApproval">
+                    <span>I understand a digital proof will be sent for my approval before printing begins. Production will not start until the proof is approved.</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Form Navigation -->
+          <div class="form-nav">
+            <button type="button" class="btn btn-outline-dark" id="prevBtn" style="visibility:hidden">&#8592; Previous</button>
+            <button type="button" class="btn btn-primary" id="nextBtn">Next Step &#8594;</button>
+          </div>
+        </form>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ========== FILE UPLOAD ========== -->
+  <section class="upload-section" id="upload">
+    <div class="container">
+      <div class="section-header animate-in">
+        <h2>Upload Your Files</h2>
+        <p>Send us your print-ready designs</p>
+      </div>
+      <div class="upload-zone animate-in" id="uploadZone">
+        <div class="upload-zone-icon">&#128194;</div>
+        <h3>Drag &amp; Drop Files Here</h3>
+        <p>or click to browse your computer</p>
+        <button type="button" class="btn btn-primary btn-sm browse-btn" id="browseBtn">Browse Files</button>
+        <input type="file" id="fileInput" multiple accept=".pdf,.ai,.psd,.eps,.png,.jpg,.jpeg,.svg,.tiff,.tif" style="display:none">
+        <div class="file-types">Accepted: PDF, AI, PSD, EPS, PNG, JPG, SVG, TIFF &mdash; Max 50MB per file</div>
+      </div>
+      <div class="upload-previews" id="uploadPreviews"></div>
+    </div>
+  </section>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+
+        <div class="footer-col">
+          <div class="footer-logo">
+            <div class="logo-monogram">P</div>
+            <div class="logo-text">Print<span style="color:var(--teal)">Craft</span></div>
+          </div>
+          <p>Your one-stop shop for premium print products. We combine cutting-edge technology with artisan craftsmanship to deliver exceptional results.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Services</h4>
+          <ul>
+            <li><a href="#services">Business Cards</a></li>
+            <li><a href="#services">Flyers &amp; Leaflets</a></li>
+            <li><a href="#services">Posters</a></li>
+            <li><a href="#services">Brochures</a></li>
+            <li><a href="#services">Stickers &amp; Labels</a></li>
+            <li><a href="#services">Banners &amp; Signs</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Company</h4>
+          <ul>
+            <li><a href="#">About Us</a></li>
+            <li><a href="#">Our Process</a></li>
+            <li><a href="#">Portfolio</a></li>
+            <li><a href="#">Blog</a></li>
+            <li><a href="#">Careers</a></li>
+            <li><a href="#">Press</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <div class="contact-item"><span>&#128205;</span> 123 Print Ave, Design District</div>
+          <div class="contact-item"><span>&#128222;</span> (555) 012-3456</div>
+          <div class="contact-item"><span>&#9993;</span> hello@printcraftstudio.com</div>
+          <div class="contact-item"><span>&#128338;</span> Mon-Fri, 9am - 6pm</div>
+        </div>
+
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">&copy; 2026 PrintCraft Studio. All rights reserved.</div>
+    </div>
+  </footer>
+
+  <!-- ========== CONFIRMATION MODAL ========== -->
+  <div class="modal-overlay" id="confirmationModal">
+    <div class="modal">
+      <div class="modal-icon">&#10003;</div>
+      <h3>Order Submitted!</h3>
+      <p>Thank you for your order. We'll review your details and send a digital proof to your email within 24 hours. No charges until you approve.</p>
+      <button class="btn btn-primary" id="modalCloseBtn">Got It</button>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

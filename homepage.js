@@ -1,7 +1,7 @@
 /* ========================================
    PrintCraft Studio — homepage.js
    Dynamic data loading for the homepage
-   Loads services, section ordering, analytics from Supabase
+   Loads products, services, section ordering, analytics from Supabase
    ======================================== */
 
 (function () {
@@ -29,7 +29,6 @@
 
       const mainContent = document.querySelector('body');
       const footer = document.querySelector('.footer');
-      const modal = document.getElementById('confirmationModal');
 
       // Collect all section elements
       const sectionEls = {};
@@ -74,6 +73,52 @@
     }
   }
 
+  /* ---------- Dynamic Products ---------- */
+  async function loadProducts() {
+    try {
+      const { data: products, error } = await sb
+        .from('products')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error || !products || products.length === 0) return;
+
+      const grid = document.getElementById('productsGrid');
+      if (!grid) return;
+
+      grid.innerHTML = products.map(p => `
+        <div class="service-card animate-in visible" data-service="${escapeHtml(p.name.toLowerCase().replace(/\s+/g, '-'))}">
+          ${p.image_url
+            ? `<div class="service-img"><img src="${escapeHtml(p.image_url)}" alt="${escapeHtml(p.name)}" loading="lazy"></div>`
+            : `<div class="service-icon">&#128230;</div>`
+          }
+          <h3>${escapeHtml(p.name)}</h3>
+          <p class="service-desc">${escapeHtml(p.description || '')}</p>
+          <span class="item-category-badge">${escapeHtml(p.category || '')}</span>
+          <button class="btn btn-primary btn-sm order-btn" data-service="${escapeHtml(p.name.toLowerCase().replace(/\s+/g, '-'))}">Order Now</button>
+        </div>
+      `).join('');
+
+      // Show the products section
+      const productsSection = document.getElementById('products');
+      if (productsSection) productsSection.style.display = '';
+
+      // Re-attach order button listeners
+      grid.querySelectorAll('.order-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          const bookingSection = document.getElementById('booking');
+          if (bookingSection) {
+            bookingSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      });
+    } catch (err) {
+      console.error('Error loading products:', err);
+    }
+  }
+
   /* ---------- Dynamic Services ---------- */
   async function loadServices() {
     try {
@@ -100,6 +145,9 @@
         </div>
       `).join('');
 
+      // Update booking form service dropdown with DB services
+      updateBookingDropdown(services);
+
       // Re-attach order button listeners
       grid.querySelectorAll('.order-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
@@ -113,6 +161,21 @@
     } catch (err) {
       console.error('Error loading services:', err);
     }
+  }
+
+  /* ---------- Update Booking Form Service Dropdown ---------- */
+  function updateBookingDropdown(services) {
+    const select = document.getElementById('serviceTypeSelect');
+    if (!select || !services || services.length === 0) return;
+
+    // Keep the placeholder option, replace the rest
+    select.innerHTML = '<option value="">Choose a service...</option>';
+    services.forEach(s => {
+      const opt = document.createElement('option');
+      opt.value = s.name.toLowerCase().replace(/\s+/g, '-');
+      opt.textContent = s.name;
+      select.appendChild(opt);
+    });
   }
 
   /* ---------- Dynamic Pricing on Service Cards ---------- */
@@ -227,6 +290,7 @@
     addFooterIds();
     await Promise.all([
       applySections(),
+      loadProducts(),
       loadServices(),
       loadPricing(),
       loadFooterContact(),

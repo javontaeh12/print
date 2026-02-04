@@ -1033,3 +1033,17 @@ body {
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Upload Spinner ---------- */
+.spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid rgba(0,180,216,0.2);
+  border-top-color: #00b4d8;
+  border-radius: 50%;
+  animation: uploadSpin 0.7s linear infinite;
+}
+
+@keyframes uploadSpin {
+  to { transform: rotate(360deg); }
+}

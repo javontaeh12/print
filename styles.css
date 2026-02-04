@@ -739,6 +739,17 @@ h1, h2, h3, h4, h5 {
   margin-bottom: var(--space-lg);
 }
 
+.item-category-badge {
+  display: inline-block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--teal-dark);
+  background: rgba(0, 180, 216, 0.1);
+  padding: 2px 10px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-md);
+}
+
 /* ========================================
    DESIGN TOOL
    ======================================== */

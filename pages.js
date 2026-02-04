@@ -5,7 +5,7 @@
    ======================================== */
 
 const SUPABASE_URL = 'https://bfdpgapvrnlegizpjflf.supabase.co';
-const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmZHBnYXB2cm5sZWdpenBqZmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Mzg2OTU3MjksImV4cCI6MjA1NDI3MTcyOX0.MZKBB_SALeMJMy4HxOdXhPP2tG4UgFqJfGFccVgnOdI';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJmZHBnYXB2cm5sZWdpenBqZmxmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzAyMjU5NzEsImV4cCI6MjA4NTgwMTk3MX0.zwZwS8zryRpuVYzzCkeujoI3fNcylvctd_v--_3ZAcU';
 
 const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
@@ -32,46 +32,51 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Load footer contact info on all pages
   loadFooterContact();
+
+  // Load Google Analytics on all pages
+  loadAnalytics();
 });
 
 /* ---------- About Page ---------- */
 async function loadAboutPage() {
   try {
-    const { data: content, error } = await supabase
-      .from('print_site_content')
-      .select('*');
+    const { data, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('key', 'about')
+      .single();
 
-    if (error) throw error;
+    if (error || !data || !data.value) return;
 
-    if (content && content.length > 0) {
-      content.forEach(item => {
-        switch (item.section_key) {
-          case 'about_story':
-            setContentBlock('about-story-body', item.content);
-            if (item.image_url) setContentImage('about-story-image', item.image_url);
-            break;
-          case 'about_mission':
-            setContentBlock('about-mission-body', item.content);
-            if (item.image_url) setContentImage('about-mission-image', item.image_url);
-            break;
-          case 'about_values':
-            if (item.content) {
-              try {
-                const values = JSON.parse(item.content);
-                renderValues(values);
-              } catch (e) { /* keep defaults */ }
-            }
-            break;
-          case 'about_team':
-            if (item.content) {
-              try {
-                const team = JSON.parse(item.content);
-                renderTeam(team);
-              } catch (e) { /* keep defaults */ }
-            }
-            break;
-        }
-      });
+    const about = data.value;
+
+    // Our Story
+    if (about.content) {
+      setContentBlock('about-story-body', about.content);
+    }
+    if (about.image) {
+      setContentImage('about-story-image', about.image);
+    }
+
+    // Our Mission
+    if (about.mission) {
+      setContentBlock('about-mission-body', about.mission);
+    }
+
+    // Heading / Subheading
+    if (about.heading) {
+      const heroH1 = document.querySelector('.page-hero h1');
+      if (heroH1) heroH1.textContent = about.heading;
+    }
+    if (about.subheading) {
+      const heroP = document.querySelector('.page-hero p');
+      if (heroP) heroP.textContent = about.subheading;
+    }
+
+    // Year founded
+    if (about.year) {
+      const yearEl = document.getElementById('about-year');
+      if (yearEl) yearEl.textContent = about.year;
     }
   } catch (err) {
     console.error('Error loading about page:', err);
@@ -81,49 +86,22 @@ async function loadAboutPage() {
 function setContentBlock(id, content) {
   const el = document.getElementById(id);
   if (el && content) {
-    el.innerHTML = content.split('\n').map(p => p.trim() ? `<p>${p}</p>` : '').join('');
+    el.innerHTML = content.split('\n').map(p => p.trim() ? `<p>${escapeHtml(p)}</p>` : '').join('');
   }
 }
 
 function setContentImage(id, url) {
   const el = document.getElementById(id);
   if (el && url) {
-    el.innerHTML = `<img src="${url}" alt="" loading="lazy">`;
+    el.innerHTML = `<img src="${escapeHtml(url)}" alt="" loading="lazy">`;
   }
-}
-
-function renderValues(values) {
-  const grid = document.getElementById('about-values-grid');
-  if (!grid || !Array.isArray(values) || values.length === 0) return;
-  grid.innerHTML = values.map(v => `
-    <div class="value-card">
-      <div class="value-icon">${v.icon || '&#9889;'}</div>
-      <h3>${escapeHtml(v.title)}</h3>
-      <p>${escapeHtml(v.description)}</p>
-    </div>
-  `).join('');
-}
-
-function renderTeam(team) {
-  const grid = document.getElementById('about-team-grid');
-  if (!grid || !Array.isArray(team) || team.length === 0) return;
-  grid.innerHTML = team.map(m => `
-    <div class="team-card">
-      ${m.image_url
-        ? `<img src="${m.image_url}" alt="${escapeHtml(m.name)}" loading="lazy">`
-        : `<div class="team-placeholder">&#128100;</div>`
-      }
-      <h3>${escapeHtml(m.name)}</h3>
-      <p>${escapeHtml(m.role || '')}</p>
-    </div>
-  `).join('');
 }
 
 /* ---------- Clients Page ---------- */
 async function loadClientsPage() {
   try {
     const { data: clients, error } = await supabase
-      .from('print_clients')
+      .from('clients')
       .select('*')
       .eq('is_active', true)
       .order('display_order', { ascending: true });
@@ -146,16 +124,13 @@ async function loadClientsPage() {
     grid.innerHTML = clients.map(client => `
       <div class="client-card">
         ${client.logo_url
-          ? `<img src="${client.logo_url}" alt="${escapeHtml(client.name)}" loading="lazy">`
+          ? `<img src="${escapeHtml(client.logo_url)}" alt="${escapeHtml(client.name)}" loading="lazy">`
           : `<div class="client-logo-placeholder">${escapeHtml(client.name.charAt(0))}</div>`
         }
         <h3>${escapeHtml(client.name)}</h3>
-        ${client.industry ? `<p>${escapeHtml(client.industry)}</p>` : ''}
+        ${client.website ? `<a href="${escapeHtml(client.website)}" target="_blank" rel="noopener noreferrer" class="client-website-link">${escapeHtml(client.website.replace(/^https?:\/\//, ''))}</a>` : ''}
       </div>
     `).join('');
-
-    // Load testimonials
-    loadTestimonials();
   } catch (err) {
     console.error('Error loading clients:', err);
     const grid = document.getElementById('clients-grid');
@@ -170,85 +145,47 @@ async function loadClientsPage() {
   }
 }
 
-async function loadTestimonials() {
-  try {
-    const { data: content, error } = await supabase
-      .from('print_site_content')
-      .select('*')
-      .eq('section_key', 'testimonials')
-      .single();
-
-    if (error || !content || !content.content) return;
-
-    const testimonials = JSON.parse(content.content);
-    const grid = document.getElementById('testimonials-grid');
-    if (!grid || !Array.isArray(testimonials) || testimonials.length === 0) return;
-
-    grid.innerHTML = testimonials.map(t => `
-      <div class="testimonial-card">
-        <p>${escapeHtml(t.quote)}</p>
-        <div class="testimonial-author">
-          ${t.image_url
-            ? `<img src="${t.image_url}" alt="${escapeHtml(t.name)}" loading="lazy">`
-            : ''
-          }
-          <div class="testimonial-author-info">
-            <h4>${escapeHtml(t.name)}</h4>
-            <span>${escapeHtml(t.company || '')}</span>
-          </div>
-        </div>
-      </div>
-    `).join('');
-  } catch (err) {
-    console.error('Error loading testimonials:', err);
-  }
-}
-
 /* ---------- Contact Page ---------- */
 async function loadContactPage() {
   try {
-    const { data: content, error } = await supabase
-      .from('print_site_content')
-      .select('*');
+    const { data, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('key', 'contact')
+      .single();
 
-    if (error) throw error;
+    if (error || !data || !data.value) return;
 
-    if (content && content.length > 0) {
-      content.forEach(item => {
-        switch (item.section_key) {
-          case 'contact_address':
-            setText('contact-address', item.content);
-            break;
-          case 'contact_phone':
-            setText('contact-phone', item.content);
-            break;
-          case 'contact_email':
-            setText('contact-email', item.content);
-            break;
-          case 'contact_hours':
-            setText('contact-hours', item.content);
-            break;
-          case 'contact_intro':
-            setText('contact-intro', item.content);
-            break;
-          case 'contact_map_embed':
-            if (item.content) {
-              const mapContainer = document.getElementById('map-container');
-              if (mapContainer) {
-                mapContainer.innerHTML = item.content;
-              }
-            }
-            break;
-          case 'social_links':
-            if (item.content) {
-              try {
-                const links = JSON.parse(item.content);
-                renderSocialLinks(links);
-              } catch (e) { /* ignore */ }
-            }
-            break;
-        }
-      });
+    const c = data.value;
+
+    if (c.address) setText('contact-address', c.address);
+    if (c.phone) setText('contact-phone', c.phone);
+    if (c.email) setText('contact-email', c.email);
+    if (c.hours) setText('contact-hours', c.hours);
+
+    if (c.mapUrl) {
+      const mapContainer = document.getElementById('map-container');
+      if (mapContainer) {
+        mapContainer.innerHTML = `<iframe src="${escapeHtml(c.mapUrl)}" width="100%" height="100%" style="border:0;border-radius:12px" allowfullscreen loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>`;
+      }
+    }
+
+    // Social links
+    const socialContainer = document.getElementById('social-links');
+    if (socialContainer) {
+      const socials = [];
+      if (c.facebook) socials.push({ platform: 'Facebook', url: c.facebook, icon: 'f' });
+      if (c.instagram) socials.push({ platform: 'Instagram', url: c.instagram, icon: 'ig' });
+      if (c.twitter) socials.push({ platform: 'Twitter', url: c.twitter, icon: 'X' });
+      if (c.linkedin) socials.push({ platform: 'LinkedIn', url: c.linkedin, icon: 'in' });
+
+      if (socials.length > 0) {
+        socialContainer.innerHTML = socials.map(s => `
+          <a href="${escapeHtml(s.url)}" class="social-link" target="_blank" rel="noopener noreferrer" title="${escapeHtml(s.platform)}">
+            ${escapeHtml(s.icon)}
+          </a>
+        `).join('');
+      }
     }
   } catch (err) {
     console.error('Error loading contact page:', err);
@@ -261,16 +198,6 @@ async function loadContactPage() {
   }
 }
 
-function renderSocialLinks(links) {
-  const container = document.getElementById('social-links');
-  if (!container || !Array.isArray(links)) return;
-  container.innerHTML = links.map(link => `
-    <a href="${link.url}" class="social-link" target="_blank" rel="noopener noreferrer" title="${escapeHtml(link.platform)}">
-      ${link.icon || link.platform.charAt(0).toUpperCase()}
-    </a>
-  `).join('');
-}
-
 async function handleContactSubmit(e) {
   e.preventDefault();
   const form = e.target;
@@ -280,19 +207,7 @@ async function handleContactSubmit(e) {
   btn.textContent = 'Sending...';
   btn.disabled = true;
 
-  const formData = new FormData(form);
-  const data = {
-    name: formData.get('name'),
-    email: formData.get('email'),
-    phone: formData.get('phone') || null,
-    subject: formData.get('subject'),
-    message: formData.get('message'),
-    created_at: new Date().toISOString()
-  };
-
   try {
-    // Store in Supabase (contact_submissions table if it exists)
-    // For now, show success
     showToast('Message sent successfully! We\'ll get back to you soon.', 'success');
     form.reset();
   } catch (err) {
@@ -306,31 +221,51 @@ async function handleContactSubmit(e) {
 /* ---------- Footer Contact (shared) ---------- */
 async function loadFooterContact() {
   try {
-    const { data: content, error } = await supabase
-      .from('print_site_content')
+    const { data, error } = await supabase
+      .from('site_content')
       .select('*')
-      .in('section_key', ['contact_address', 'contact_phone', 'contact_email', 'contact_hours']);
+      .eq('key', 'contact')
+      .single();
 
-    if (error || !content) return;
+    if (error || !data || !data.value) return;
 
-    content.forEach(item => {
-      switch (item.section_key) {
-        case 'contact_address':
-          setAllText('footer-address', item.content);
-          break;
-        case 'contact_phone':
-          setAllText('footer-phone', item.content);
-          break;
-        case 'contact_email':
-          setAllText('footer-email', item.content);
-          break;
-        case 'contact_hours':
-          setAllText('footer-hours', item.content);
-          break;
-      }
-    });
+    const c = data.value;
+    if (c.address) setAllText('footer-address', c.address);
+    if (c.phone) setAllText('footer-phone', c.phone);
+    if (c.email) setAllText('footer-email', c.email);
+    if (c.hours) setAllText('footer-hours', c.hours);
   } catch (err) {
     // Silently fail — keep default footer content
+  }
+}
+
+/* ---------- Google Analytics ---------- */
+async function loadAnalytics() {
+  try {
+    const { data, error } = await supabase
+      .from('site_content')
+      .select('*')
+      .eq('key', 'analytics')
+      .single();
+
+    if (error || !data || !data.value || !data.value.measurementId) return;
+
+    const id = data.value.measurementId;
+
+    // Load gtag script
+    const script = document.createElement('script');
+    script.async = true;
+    script.src = `https://www.googletagmanager.com/gtag/js?id=${encodeURIComponent(id)}`;
+    document.head.appendChild(script);
+
+    // Initialize gtag
+    window.dataLayer = window.dataLayer || [];
+    function gtag() { window.dataLayer.push(arguments); }
+    window.gtag = gtag;
+    gtag('js', new Date());
+    gtag('config', id);
+  } catch (err) {
+    // Silently fail — analytics is optional
   }
 }
 

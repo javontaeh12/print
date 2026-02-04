@@ -124,7 +124,7 @@
   </header>
 
   <!-- ========== HERO ========== -->
-  <section class="hero" id="hero">
+  <section class="hero" id="hero" data-section="hero">
     <div class="container hero-content">
       <h1>Premium Printing, Delivered Fast.</h1>
       <p>From business cards to banners, get stunning print products with fast turnaround and free shipping on every order.</p>
@@ -150,7 +150,7 @@
   </section>
 
   <!-- ========== POPULAR SERVICES ========== -->
-  <section class="services" id="services">
+  <section class="services" id="services" data-section="services">
     <div class="container">
       <div class="section-header animate-in">
         <h2>Popular Services</h2>
@@ -211,7 +211,7 @@
   </section>
 
   <!-- ========== DESIGN TOOL ========== -->
-  <section class="designer" id="designer">
+  <section class="designer" id="designer" data-section="designer">
     <div class="container">
       <div class="section-header animate-in">
         <h2>Business Card Designer</h2>
@@ -336,7 +336,7 @@
   </section>
 
   <!-- ========== BOOKING FORM ========== -->
-  <section class="booking" id="booking">
+  <section class="booking" id="booking" data-section="booking">
     <div class="container">
       <div class="section-header animate-in">
         <h2>Book a Print Service</h2>
@@ -561,7 +561,7 @@
   </section>
 
   <!-- ========== FILE UPLOAD ========== -->
-  <section class="upload-section" id="upload">
+  <section class="upload-section" id="upload" data-section="upload">
     <div class="container">
       <div class="section-header animate-in">
         <h2>Upload Your Files</h2>
@@ -616,10 +616,10 @@
 
         <div class="footer-col">
           <h4>Contact</h4>
-          <div class="contact-item"><span>&#128205;</span> 123 Print Ave, Design District</div>
-          <div class="contact-item"><span>&#128222;</span> (555) 012-3456</div>
-          <div class="contact-item"><span>&#9993;</span> hello@printcraftstudio.com</div>
-          <div class="contact-item"><span>&#128338;</span> Mon-Fri, 9am - 6pm</div>
+          <div class="contact-item"><span>&#128205;</span> <span id="footer-address">123 Print Ave, Design District</span></div>
+          <div class="contact-item"><span>&#128222;</span> <span id="footer-phone">(555) 012-3456</span></div>
+          <div class="contact-item"><span>&#9993;</span> <span id="footer-email">hello@printcraftstudio.com</span></div>
+          <div class="contact-item"><span>&#128338;</span> <span id="footer-hours">Mon-Fri, 9am - 6pm</span></div>
         </div>
 
       </div>
@@ -639,6 +639,8 @@
     </div>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
+  <script src="homepage.js"></script>
 </body>
 </html>

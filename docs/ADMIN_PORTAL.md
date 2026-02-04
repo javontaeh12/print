@@ -28,7 +28,8 @@ Print/
 ├── clients.html        # Our Clients page
 ├── contact.html        # Contact Us page
 ├── styles.css          # Homepage styles
-├── script.js           # Homepage JS
+├── script.js           # Homepage interactions (designer, booking, upload)
+├── homepage.js         # Homepage dynamic data loading from Supabase
 ├── pages.css           # Shared styles for About/Clients/Contact
 ├── pages.js            # Shared Supabase data loading for subpages
 ├── admin/
@@ -49,47 +50,58 @@ Print/
 | **Dashboard** | Overview stats + quick actions | — |
 | **Products** | CRUD for print products, organized by category | index.html (services section) |
 | **Services** | CRUD for printer services, organized by category | index.html (services section) |
-| **Pricing** | Fixed prices and quote-only options | index.html (booking form) |
+| **Pricing** | Fixed prices and quote-only options | index.html (service cards) |
 | **Sections** | Drag-and-drop reorder + enable/disable frontend sections | index.html (section ordering) |
-| **About Us** | Edit story, mission, values, team | about.html |
-| **Our Clients** | Upload client logos, names, industry | clients.html |
-| **Contact** | Email, phone, address, hours, social links, map | contact.html |
-| **Analytics** | Connect Google Analytics Measurement ID | All pages |
+| **About Us** | Edit story, mission, heading, subheading, image, year | about.html |
+| **Our Clients** | Upload client logos, names, websites | clients.html |
+| **Contact** | Email, phone, address, hours, social links, map embed | contact.html |
+| **Analytics** | Connect Google Analytics Measurement ID | All pages (loaded dynamically) |
 
 ## Database Tables
 
 | Table | Purpose |
 |-------|---------|
-| `print_admin_users` | Whitelist of authorized admin emails |
-| `print_products` | Print products with category, image, display order |
-| `print_services` | Printer services with category, icon, display order |
-| `print_pricing` | Pricing entries — fixed price or request-quote |
-| `print_page_sections` | Frontend section order and enabled/disabled state |
-| `print_site_content` | Key-value store for About Us, Contact, Analytics config |
-| `print_clients` | Client logos, names, websites, industry |
+| `admin_users` | Whitelist of authorized admin emails |
+| `products` | Print products with category, image, display order |
+| `services` | Printer services with category, icon, display order |
+| `pricing` | Pricing entries — fixed price or request-quote |
+| `page_sections` | Frontend section order and enabled/disabled state |
+| `site_content` | Key-value JSONB store for About Us, Contact, Analytics config |
+| `clients` | Client logos, names, websites, display order |
+
+## Data Architecture
+
+### site_content table (key-value JSONB)
+
+| Key | Value Structure |
+|-----|----------------|
+| `about` | `{ heading, subheading, content, mission, image, year }` |
+| `contact` | `{ email, phone, address, hours, mapUrl, facebook, instagram, twitter, linkedin }` |
+| `analytics` | `{ measurementId }` |
 
 ## Frontend Pages
 
 ### Homepage (index.html)
-- Sections are dynamically ordered based on `print_page_sections` table
-- Services load from `print_products` and `print_services` tables
+- Sections are dynamically ordered based on `page_sections` table
+- Services load from `services` table (replaces hardcoded cards)
+- Pricing overlays from `pricing` table
+- Footer contact info loaded from `site_content` (key: "contact")
+- Google Analytics loaded from `site_content` (key: "analytics")
 - Admin can enable/disable and reorder all sections
 
 ### About Us (about.html)
-- Story, mission, values, and team loaded from `print_site_content`
-- Admin edits content and uploads images via About Us tab
-- Values and team members are stored as JSON in `print_site_content`
+- Story, mission, heading, subheading loaded from `site_content` (key: "about")
+- Admin edits content via About Us tab in admin portal
 
 ### Our Clients (clients.html)
-- Client logos and names loaded from `print_clients` table
+- Client logos and names loaded from `clients` table
 - Admin uploads logos and manages client list via Our Clients tab
-- Testimonials stored in `print_site_content` as JSON
 
 ### Contact Us (contact.html)
-- Contact info loaded from `print_site_content` table
-- Contact form submissions (future: stored in Supabase)
-- Google Maps embed configurable from admin
-- Social links configurable from admin
+- Contact info loaded from `site_content` (key: "contact")
+- Social links built from facebook/instagram/twitter/linkedin fields
+- Google Maps embed from mapUrl field
+- Contact form (submissions currently client-side only)
 
 ## Setup Status
 
@@ -97,19 +109,20 @@ Print/
 - [x] Database migration run (7 tables + RLS + storage)
 - [x] Admin user seeded (javontaedharden@gmail.com)
 - [x] Google OAuth configured
-- [x] Supabase credentials updated in code
+- [x] Supabase credentials updated in all files
 - [x] Admin portal built (HTML/CSS/JS)
 - [x] Frontend pages created (about, clients, contact)
 - [x] Navigation updated across all pages
-- [ ] Frontend dynamic data loading on index.html
-- [ ] Google Analytics integration
+- [x] Homepage dynamic data loading (services, sections, pricing, analytics)
+- [x] Google Analytics integration (all pages)
+- [x] Fixed pages.js table names and credentials
 - [ ] Production testing
 
 ## Security
 
-- Only emails in the `print_admin_users` table can access the admin portal
+- Only emails in the `admin_users` table can access the admin portal
 - RLS policies ensure public users can only read active/enabled items
-- Admin operations require a valid JWT matching an `print_admin_users` email
+- Admin operations require a valid JWT matching an `admin_users` email
 - Storage uploads are restricted to authenticated admins
 
 ## Section Manager
@@ -121,9 +134,13 @@ The Section Manager allows admins to:
 
 Default sections: Hero, Popular Services, Business Card Designer, About Us, Our Clients, Booking Form, File Upload, Contact Us
 
+## Google Analytics
+
+The admin can enter a Google Analytics Measurement ID (e.g., `G-XXXXXXXXXX`) in the Analytics tab. The gtag script is dynamically loaded on all pages (homepage via `homepage.js`, subpages via `pages.js`).
+
 ## Adding New Admins
 
-Insert a new row in the `print_admin_users` table:
+Insert a new row in the `admin_users` table:
 ```sql
-INSERT INTO print_admin_users (email) VALUES ('newemail@example.com');
+INSERT INTO admin_users (email) VALUES ('newemail@example.com');
 ```
